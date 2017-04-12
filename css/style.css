@@ -1,0 +1,55 @@
+
+html,
+body,
+div,
+span,
+ul,
+ol,
+li,
+dl,
+dd,
+dt,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+q,
+blockquote,
+a,
+b,
+strong,
+i,
+label,
+form,
+fieldset,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+img,
+object,
+input {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    list-style-type: none;
+    outline: none;
+    font-style: normal;
+}
+
+::-ms-clear {
+    display: none;
+}
+
+.ui-view-container {
+    min-height: 100%;
+    position: relative;
+}
