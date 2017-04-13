@@ -1,9 +1,9 @@
 angular
-    .module('Wss.Controllers.MainCtrl', [
+    .module('Wss.Controllers.OfferCtrl', [
         'ui.router',
         'ngAnimate',
     ])
-    .controller('MainCtrl', [
+    .controller('OfferCtrl', [
         '$scope',
         '$state',
         '$timeout',
@@ -12,7 +12,7 @@ angular
         '$location',
         '$window',
         function($scope, $state, $timeout, $localStorage, $rootScope, $location, $window) {
-           
+
 
         }
     ]);

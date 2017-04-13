@@ -1,0 +1,28 @@
+<div class="container">
+    <div id="upper-navbar" class="navbar">
+        <div class="navbar-header"> <a href="#" class="navbar-brand">LOGO</a>
+            <button class="navbar-toggle" data-toggle="collapse" data-target=".navHeaderCollapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+        </div>
+        <div class="collapse navbar-collapse navHeaderCollapse">
+            <ul class="nav navbar-nav navbar-left">
+                <li ng-repeat="item in upperMenuItems"><a ng-click="changeState(item.uiSref)" ng-class="{'active' : currState == item.activeStateRule}">{{item.labelPl}}</a></li>
+            </ul>
+        </div>
+    </div>
+    <hr id="menu-hr" class="my-4">
+    <div id="lower-navbar" class="navbar">
+        <div class="navbar-header">
+            <a href="#" class="navbar-brand"></a>
+        </div>
+        <div class="collapse navbar-collapse navHeaderCollapse">
+            <ul class="nav navbar-nav navbar-left">
+                <li ng-repeat="item in lowerMenutItems" ng-if="currState == item.parentState"><a ng-click="changeState(item.uiSref)">{{item.labelPl}}</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="ui-view-container">
+        <div class="fade" ui-view></div>
+    </div>
+</div>
+
+Oferta

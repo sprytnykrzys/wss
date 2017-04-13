@@ -5,11 +5,11 @@ angular.module('Wss.Routes', [
     'Wss.Services.AuthorizationSrvc',
     'Wss.Services.ContentSrvc',
 
-    'Wss.Controllers.MainCtrl',
+    'Wss.Controllers.LoginCtrl',
     'Wss.Controllers.AdminCtrl',
-    'Wss.Controllers.AdminLoginCtrl',
     'Wss.Controllers.IndexCtrl',
-  
+    'Wss.Controllers.OfferCtrl',
+
 ])
 
 .config([
@@ -20,30 +20,30 @@ angular.module('Wss.Routes', [
         '$locationProvider',
         function($stateProvider, $urlRouterProvider, $mdDateLocaleProvider, $httpProvider, $locationProvider) {
             $stateProvider
-                .state('main', {
-                    url: '/main',
-                    templateUrl: 'views/main.html',
-                    controller: 'MainCtrl'
+                .state('login', {
+                    url: '/login',
+                    templateUrl: 'views/login.html',
+                    controller: 'LoginCtrl'
                 })
                 .state('admin', {
                     url: '/admin',
                     templateUrl: 'views/admin.html',
                     controller: 'AdminCtrl'
                 })
-                .state('adminLogin', {
-                    url: '/login',
-                    templateUrl: 'views/adminLogin.html',
-                    parent: 'admin',
-                    controller: 'AdminLoginCtrl'
+                .state('offer', {
+                    url: '/offer',
+                    templateUrl: 'views/offer.html',
+                    controller: 'OfferCtrl'
                 });
-           
+
+
 
             // $locationProvider.html5Mode(true);
 
 
             $urlRouterProvider.otherwise(function($injector, $location) {
                 var $state = $injector.get("$state");
-                $state.go("main");
+                $state.go("login");
             });
 
         }
@@ -52,7 +52,7 @@ angular.module('Wss.Routes', [
 
         $rootScope.$on('$stateChangeStart', function(e, to, params, from) {
             $rootScope.currState = to.name;
-            $rootScope.parentCurrState = to.parent;
+            // $rootScope.parentCurrState = to.parent;
 
 
             //TODO - should be moved to config file
