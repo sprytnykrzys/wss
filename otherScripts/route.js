@@ -7,6 +7,9 @@ angular.module('Wss.Routes', [
 
     'Wss.Controllers.MainCtrl',
     'Wss.Controllers.AdminCtrl',
+    'Wss.Controllers.AdminLoginCtrl',
+    'Wss.Controllers.IndexCtrl',
+  
 ])
 
 .config([
@@ -26,15 +29,21 @@ angular.module('Wss.Routes', [
                     url: '/admin',
                     templateUrl: 'views/admin.html',
                     controller: 'AdminCtrl'
+                })
+                .state('adminLogin', {
+                    url: '/login',
+                    templateUrl: 'views/adminLogin.html',
+                    parent: 'admin',
+                    controller: 'AdminLoginCtrl'
                 });
-            
+           
 
             // $locationProvider.html5Mode(true);
 
 
             $urlRouterProvider.otherwise(function($injector, $location) {
                 var $state = $injector.get("$state");
-                $state.go("admin");
+                $state.go("main");
             });
 
         }
@@ -45,10 +54,11 @@ angular.module('Wss.Routes', [
             $rootScope.currState = to.name;
             $rootScope.parentCurrState = to.parent;
 
-             e.preventDefault();
-            $state.go('main');
-  
+
             //TODO - should be moved to config file
+
+
+
 
 
 

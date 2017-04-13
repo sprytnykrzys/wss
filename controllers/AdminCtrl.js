@@ -12,7 +12,6 @@ angular
         '$location',
         '$window',
         function($scope, $state, $timeout, $localStorage, $rootScope, $location, $window) {
-           
 
 
 

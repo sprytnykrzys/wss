@@ -1,3 +1,6 @@
+a img {
+    border: 0;
+}
 
 html,
 body,
@@ -49,7 +52,3 @@ input {
     display: none;
 }
 
-.ui-view-container {
-    min-height: 100%;
-    position: relative;
-}
