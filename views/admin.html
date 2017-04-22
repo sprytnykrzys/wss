@@ -1,11 +1,11 @@
 <div class="container">
     <div id="upper-navbar" class="navbar">
-        <div class="navbar-header"> <a href="#" class="navbar-brand">LOGO</a>
+        <div class="navbar-header"> <a href="#" class="navbar-brand"><img src="img/logo.gif"></a>
             <button class="navbar-toggle" data-toggle="collapse" data-target=".navHeaderCollapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
         </div>
         <div class="collapse navbar-collapse navHeaderCollapse">
             <ul class="nav navbar-nav navbar-left">
-                <li ng-repeat="item in upperMenuItems"><a ng-click="changeState(item.uiSref)" ng-class="{'active' : currState == item.activeStateRule}">{{item.labelPl}}</a></li>
+                <li ng-repeat="item in upperMenuItems"><a ng-click="changeState(item.uiSref)" ng-class="{'active' : item.labelPl == 'Admin'}">{{item.labelPl}}</a></li>
             </ul>
         </div>
     </div>
@@ -16,11 +16,11 @@
         </div>
         <div class="collapse navbar-collapse navHeaderCollapse">
             <ul class="nav navbar-nav navbar-left">
-                <li ng-repeat="item in lowerMenutItems" ng-if="currState == item.parentState"><a ng-click="changeState(item.uiSref)">{{item.labelPl}}</a></li>
+                <li ng-repeat="item in lowerMenuItems"><a ng-click="changeState(item.uiSref)" ng-class="{'active' : currState == item.activeStateRule}">{{item.labelPl}}</a></li>
             </ul>
         </div>
     </div>
-    <div class="ui-view-container">
-        <div class="fade" ui-view></div>
-    </div>
+</div>
+<div class="ui-view-container">
+    <div ui-view></div>
 </div>

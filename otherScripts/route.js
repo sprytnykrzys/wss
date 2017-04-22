@@ -9,6 +9,13 @@ angular.module('Wss.Routes', [
     'Wss.Controllers.AdminCtrl',
     'Wss.Controllers.IndexCtrl',
     'Wss.Controllers.OfferCtrl',
+    'Wss.Controllers.DashboardCtrl',
+    'Wss.Controllers.ProductCtrl',
+    'Wss.Controllers.SetCtrl',
+    'Wss.Controllers.CatalogCtrl',
+    'Wss.Controllers.CustomerCtrl',
+    'Wss.Controllers.SearchCtrl',
+    'Wss.Controllers.OrderCtrl',
 
 ])
 
@@ -34,7 +41,50 @@ angular.module('Wss.Routes', [
                     url: '/offer',
                     templateUrl: 'views/offer.html',
                     controller: 'OfferCtrl'
-                });
+                })
+                .state('dashboard', {
+                    url: '/dashboard',
+                    templateUrl: 'views/dashboard.html',
+                    parent: 'admin',
+                    controller: 'DashboardCtrl'
+                })
+                .state('product', {
+                    url: '/product',
+                    templateUrl: 'views/product.html',
+                    parent: 'admin',
+                    controller: 'ProductCtrl'
+                })
+                .state('set', {
+                    url: '/set',
+                    templateUrl: 'views/set.html',
+                    parent: 'admin',
+                    controller: 'SetCtrl'
+                })
+                .state('catalog', {
+                    url: '/catalog',
+                    templateUrl: 'views/catalog.html',
+                    parent: 'admin',
+                    controller: 'CatalogCtrl'
+                })
+                .state('customer', {
+                    url: '/customer',
+                    templateUrl: 'views/customer.html',
+                    parent: 'admin',
+                    controller: 'CustomerCtrl'
+                })
+                .state('search', {
+                    url: '/search',
+                    templateUrl: 'views/search.html',
+                    parent: 'offer',
+                    controller: 'SearchCtrl'
+                })
+                .state('order', {
+                    url: '/order',
+                    templateUrl: 'views/order.html',
+                    parent: 'offer',
+                    controller: 'OrderCtrl'
+                })
+
 
 
 
@@ -52,13 +102,21 @@ angular.module('Wss.Routes', [
 
         $rootScope.$on('$stateChangeStart', function(e, to, params, from) {
             $rootScope.currState = to.name;
-            // $rootScope.parentCurrState = to.parent;
+            $rootScope.parentCurrState = to.parent;
 
 
             //TODO - should be moved to config file
 
 
+            if (to.name == 'admin') {
+                e.preventDefault();
+                $state.go('dashboard');
+            }
 
+            if (to.name == 'offer') {
+                e.preventDefault();
+                $state.go('search');
+            }
 
 
 
