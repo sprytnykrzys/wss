@@ -14,14 +14,7 @@ angular
         function($scope, $state, $timeout, $localStorage, $rootScope, $location, $window) {
 
 
-            $scope.upperMenuItems = [{
-                'labelPl': 'Oferta',
-                'activeStateRule': 'offer',
-                'uiSref': 'offer'
-            }];
-
-
-            $scope.lowerMenuItems = [{
+            $scope.menuItems = [{
                 'labelPl': 'Wyszukaj',
                 'activeStateRule': 'search',
                 'uiSref': 'search'

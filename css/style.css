@@ -58,23 +58,50 @@ td {
 }
 
 body {
-    /*overflow-x: hidden;*/
+    overflow-x: hidden;
+    background-color: rgb(250, 250, 250);
 }
 
 .ui-view-container {
     min-height: 100%;
     position: relative;
-    background-color: rgb(250, 250, 250);
+    /*background-color: rgb(250, 250, 250);*/
 }
 
 .center {
     text-align: center;
 }
 
+
+/* //// MENU //// */
+
+.nav-tabs {
+    margin-top: 9px;
+}
+
+.nav-tabs > li > a {
+    margin-right: 10px;
+    border-radius: 6px 6px 0 0;
+}
+
+.nav-tabs > li.active > a {
+    margin-right: 10px;
+    border-radius: 6px 6px 0 0;
+    background-color: rgb(250, 250, 250) !important;
+}
+
+.nav-tabs > li > a:hover {
+    border: 1px solid #ddd;
+}
+
 #upper-navbar {
-    /*border-bottom: 1px solid #000000 !important;*/
     margin-top: 30px;
     margin-bottom: -1px !important;
+}
+
+#upper-navbar-offer {
+    margin-top: 30px;
+    padding-bottom: 30px;
 }
 
 #lower-navbar {
@@ -102,7 +129,8 @@ body {
 
 .navbar-collapse ul > li > a:hover {
     background-color: rgb(250, 250, 250) !important;
-    color: #CC0000 !important;
+    border-bottom-color: transparent;
+    /*color: #CC0000 !important;*/
     cursor: pointer;
 }
 
@@ -185,24 +213,31 @@ body {
 
 /* //// SEARCH //// */
 
+#your-set {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-top: 20px;
+}
+
 #search-hr {
-    border-top: 2px solid #eee !important;
+    border-top: 1px solid #ddd !important;
 }
 
 .search-img {
     height: 100px;
     width: 100px;
+    border-radius: 5px;
 }
 
 .search-product {
     height: 100px;
     line-height: 100px;
-    width: 150px;
+    /*width: 150px;*/
     text-align: right;
 }
 
 .product-number {
-    float: left;
+    /*float: left;*/
     font-size: 30px;
 }
 
@@ -212,8 +247,9 @@ body {
 
 .add-product {
     width: 165px;
-    margin-left: 135px;
     margin-top: 30px;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .add-product-input {
@@ -221,8 +257,28 @@ body {
     float: left;
 }
 
-#search-dashboard {
-	margin-top: 30px;
+.main-section {
+    position: relative;
+    line-height: 20px;
+    text-align: center;
+    border: 1px solid #ddd;
+    padding-bottom: 30px;
+    border-radius: 6px;
+}
+
+.main-section-h5 {
+    z-index: 2;
+    display: inline-block;
+    padding-left: 1em;
+    padding-right: 1em;
+    color: #6f7890;
+    vertical-align: middle;
+    background-color: rgb(250, 250, 250);
+    border: 1px solid #ddd;
+    padding: 7px;
+    border-bottom: none;
+    margin-top: -21px;
+    border-radius: 3px;
 }
 
 
@@ -249,7 +305,6 @@ body {
     width: 136px;
     padding-right: 0px !important;
     text-align: right;
-    /*margin-left: 8px;*/
 }
 
 .order-h5 {
@@ -273,7 +328,7 @@ body {
 @media (max-width: 520px) {
     .product-div {
         width: 100%;
-        margin-top: 20px;
+        margin-top: 45px;
     }
     .add-product {
         margin-left: auto;
@@ -283,6 +338,13 @@ body {
     .search-product {
         margin-left: auto;
         margin-right: auto;
+        float: none;
+        width: 150px;
+        height: 100px;
+        text-align: center;
+        line-height: 25px;
+    }
+    .product-number {
         float: none;
     }
     .product-information {
@@ -307,7 +369,6 @@ body {
     }
     .product-inputs {
         width: 300px !important;
-        margin-left: 0px !important;
     }
     .catalog-hr {
         width: 325px;
@@ -320,6 +381,24 @@ body {
         margin-left: 0px !important;
         margin-top: -12px !important;
     }
+    .nav-tabs {
+        border: 1px solid #fff;
+    }
+    .nav-tabs > li {
+        float: none !important;
+    }
+    .nav > li > a {
+        padding: 10px 0px !important;
+    }
+    .nav-tabs > li.active > a {
+        border: none;
+    }
+    .nav-tabs > li > a {
+        border: none;
+    }
+    .nav-tabs > li a:hover {
+        border: none !important;
+    }
 }
 
 @media (max-width: 991px) {
@@ -327,12 +406,10 @@ body {
         margin-left: -40px;
     }
     .product-inputs {
-        margin-left: -40px;
+        margin-left: auto;
+        margin-right: auto;
     }
     #set-add-button {
         margin-left: -70px;
-    }
-    #list-of-sets-label {
-        margin-bottom: -30px;
     }
 }
