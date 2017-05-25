@@ -13,6 +13,9 @@ angular
         '$window',
         function($scope, $state, $timeout, $localStorage, $rootScope, $location, $window) {
            
-
+//             $('.collapse').collapse()
+//             $('#myCollapsible').collapse({
+//   toggle: false
+// })
         }
     ]);

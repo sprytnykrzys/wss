@@ -107,6 +107,8 @@ angular.module('Wss.Routes', [
 
             //TODO - should be moved to config file
 
+            $rootScope.endpointURL = 'http://wss-app.k-org.pl';
+
 
             if (to.name == 'admin') {
                 e.preventDefault();

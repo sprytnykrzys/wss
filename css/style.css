@@ -177,7 +177,7 @@ body {
 }
 
 .product-inputs {
-    margin-left: -30px;
+    /*margin-left: -30px;*/
 }
 
 #product-submit {
@@ -193,7 +193,7 @@ body {
 /* //// SET //// */
 
 #set-add-button {
-    margin-left: -60px;
+    margin-left: -30px;
     margin-bottom: 20px;
 }
 
@@ -279,6 +279,10 @@ body {
     border-bottom: none;
     margin-top: -21px;
     border-radius: 3px;
+}
+
+.offer-inputs{
+	margin-left: -30px;
 }
 
 
@@ -370,6 +374,9 @@ body {
     .product-inputs {
         width: 300px !important;
     }
+    .offer-inputs{
+    	width: 300px !important;
+    }
     .catalog-hr {
         width: 325px;
         margin-left: 0px;
@@ -405,11 +412,11 @@ body {
     #search-clients-input {
         margin-left: -40px;
     }
-    .product-inputs {
+    .offer-inputs {
         margin-left: auto;
         margin-right: auto;
     }
     #set-add-button {
-        margin-left: -70px;
+        margin-left: -30px;
     }
 }
