@@ -47,15 +47,6 @@ angular
 
             $scope.getUsersFromAPI();
 
-
-
-            $scope.newClient = {
-                client: {
-                    name: "",
-                    discount: ""
-                }
-            };
-
             $scope.correctClientName = function() {
                 for (var i = 0; i < $localStorage.clients.length; i++) {
                     if ($localStorage.clients[i].name == $scope.newClient.client.name) {
@@ -84,6 +75,44 @@ angular
 
             }
 
+
+
+
+            $scope.saveChanges = function() {
+
+                for (var i = 0; i < $localStorage.clients.length; i++) {
+                    if ($localStorage.clients[i].name == $scope.newClient.client.name) {
+                        $scope.currentIdClient = $localStorage.clients[i].id
+                        $scope.updateClient();
+                        return true;
+                    }
+                }
+
+                $scope.addClient();
+
+            }
+
+
+            $scope.editClient = function(client) {
+                $scope.newClient.client.name = client.name;
+                $scope.newClient.client.discount = client.discount;
+                $scope.currentIdClient = client.id;
+            }
+
+
+            $scope.newClient = {
+                client: {
+                    name: "",
+                    discount: ""
+                }
+            };
+
+            $scope.newUser = {
+                email: "",
+                password: "",
+                role: "client",
+                key: "rmuwt6546wel4t65"
+            }
 
             $scope.addClient = function() {
                 ContentSrvc.sendClient($scope.newClient).then(function(data) {
@@ -120,12 +149,39 @@ angular
                 });
             }
 
+            $scope.updateClient = function() {
+                ContentSrvc.updateClient($scope.newClient, $scope.currentIdClient).then(function(data) {
+                    $scope.getClientsFromAPI();
+                    // $scope.getNestedCategoriesFromAPI();
+                    // Materialize.toast('Zapisano!', 4000);
 
-            $scope.newUser = {
-                email: "",
-                password: "",
-                role: "client",
-                key: "rmuwt6546wel4t65"
+                    // $scope.newClient = {
+                    //     client: {
+                    //         name: "",
+                    //         discount: ""
+                    //     }
+                    // };
+                    swal(
+                        'Pomyślnie zaktualizowao!',
+                        '',
+                        'success'
+                    )
+                }, function(data) {
+                    if (data.status == 403) {
+                        $localStorage.user = null;
+                        $rootScope.user = null;
+                        // Materialize.toast('Zostałeś wylogowany', 4000);
+
+                        $state.go('adminLogin');
+                    } else {
+                        swal(
+                                'Nie udało się zaktualizować!',
+                                '',
+                                'error'
+                            )
+                            // $scope.getCategoriesFromAPI();
+                    }
+                });
             }
 
             $scope.addUser = function() {
@@ -190,6 +246,7 @@ angular
 
                     ContentSrvc.deleteClient($scope.clientId).then(function(data) {
                         $scope.getClientsFromAPI();
+                        $scope.clearInputs();
                         // $scope.getNestedCategoriesFromAPI();
                         // Materialize.toast('Zapisano!', 4000);
                         swal(
@@ -232,6 +289,7 @@ angular
                     }
                     ContentSrvc.deleteUser($scope.userId).then(function(data) {
                         $scope.getUsersFromAPI();
+
                         // $scope.getNestedCategoriesFromAPI();
                         // Materialize.toast('Zapisano!', 4000);
                         swal(
@@ -257,12 +315,11 @@ angular
                 })
             }
 
-            $scope.editClient = function(name, discount) {
-                $scope.newClient.client.name = name;
-                $scope.newClient.client.discount = discount;
+
+            $scope.clearInputs = function() {
+                $scope.newClient.client.name = '';
+                $scope.newClient.client.discount = '';
             }
-
-
 
 
 

@@ -3,40 +3,39 @@
         <div class="col-lg-5 col-md-5 col-sm-7 col-xs-12">
             <label for="example-text-input" class="col-lg-4 col-md-5 col-sm-5 col-form-label input-label">Kod</label>
             <div class="col-lg-8 col-md-7 col-sm-7 input-margin">
-                <input class="form-control product-inputs" type="text" id="example-text-input">
-            </div>
-            <label for="example-text-input" class="col-lg-4 col-md-5 col-sm-5 col-form-label input-label">Kod eksportowy</label>
-            <div class="col-lg-8 col-md-7 col-sm-7 input-margin">
-                <input class="form-control product-inputs" type="text" id="example-text-input">
+                <input class="form-control product-inputs" type="text" id="example-text-input" ng-model="newProduct.product.code">
             </div>
             <label for="example-text-input" class="col-lg-4 col-md-5 col-sm-5 col-form-label input-label">Nazwa</label>
             <div class="col-lg-8 col-md-7 col-sm-7 input-margin">
-                <input class="form-control product-inputs" type="text" id="example-text-input">
+                <input class="form-control product-inputs" type="text" id="example-text-input" ng-model="newProduct.product.name">
+            </div>
+            <label for="example-text-input" class="col-lg-4 col-md-5 col-sm-5 col-form-label input-label">Kod eksportowy</label>
+            <div class="col-lg-8 col-md-7 col-sm-7 input-margin">
+                <input class="form-control product-inputs" type="text" id="example-text-input" ng-model="newProduct.product.export_code">
             </div>
             <label for="example-text-input" class="col-lg-4 col-md-5 col-sm-5 col-form-label input-label">Cena</label>
             <div class="col-lg-8 col-md-7 col-sm-7 input-margin">
-                <input class="form-control product-inputs" type="text" id="example-text-input">
+                <input class="form-control product-inputs" type="text" id="example-text-input" ng-model="newProduct.product.price">
             </div>
             <label for="example-text-input" class="col-lg-4 col-md-5 col-sm-5 col-form-label input-label">Waluta</label>
             <div class="col-lg-8 col-md-7 col-sm-7 input-margin">
-                <select class="form-control product-inputs">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                <select class="form-control product-inputs" ng-model="newProduct.product.currency">
+                    <option>PLN</option>
+                    <option>EUR</option>
                 </select>
             </div>
+            <!-- <div class="col-lg-8 col-md-7 col-sm-7 input-margin">
+                <input class="form-control product-inputs" type="text" id="example-text-input" ng-model="newProduct.product.currency">
+            </div> -->
             <label for="example-text-input" class="col-lg-4 col-md-5 col-sm-5 col-form-label input-label">Jednostka miary</label>
             <div class="col-lg-8 col-md-7 col-sm-7 input-margin">
-                <select class="form-control product-inputs">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                <select class="form-control product-inputs" ng-model="newProduct.product.measure_unit">
+                    <option>Sztuka</option>
                 </select>
             </div>
+            <!-- <div class="col-lg-8 col-md-7 col-sm-7 input-margin">
+                <input class="form-control product-inputs" type="text" id="example-text-input" ng-model="newProduct.product.measure_unit">
+            </div> -->
             <label for="example-text-input" class="col-lg-4 col-md-5 col-sm-5 col-form-label input-label">Katalog</label>
             <div class="col-lg-8 col-md-7 col-sm-7 input-margin">
                 <select class="form-control product-inputs">
@@ -48,7 +47,7 @@
                 </select>
             </div>
             <div id="product-submit" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <button type="submit" id="login-submit-button" class="btn btn-primary center-block">Zapisz</button>
+                <button type="submit" id="login-submit-button" class="btn btn-primary center-block" ng-click="saveChanges()">Zapisz</button>
             </div>
         </div>
         <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 table-responsive">
@@ -62,41 +61,14 @@
                         <th class="center">Akcja</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
+                <tbody> <!-- ng-if="newProduct.product.code == 0 || prod.code == newProduct.product.code"-->
+                    <tr ng-repeat="prod in products | filter : newProduct.product.code">
+                        <td ng-click="editProduct(prod)">{{prod.code}}</td>
+                        <td>{{prod.name}}</td>
+                        <td>{{prod.price}} {{prod.currency}}</td>
+                        <td>{{prod.creation_date | date:"dd/MM/yyyy"}}</td>
                         <td class="delete-button">
-                            <button type="button" class="btn btn-danger" style="">Usuń</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Mark Zadqaa</td>
-                        <td>Otto adasda</td>
-                        <td>@TwBootstrap</td>
-                        <td>@TwBootstrap</td>
-                        <td class="delete-button">
-                            <button type="button" class="btn btn-danger" style="">Usuń</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                        <td>@fat</td>
-                        <td class="delete-button">
-                            <button type="button" class="btn btn-danger" style="">Usuń</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>tekst</td>
-                        <td>tekst</td>
-                        <td>tekst</td>
-                        <td>tekst</td>
-                        <td class="delete-button">
-                            <button type="button" class="btn btn-danger" style="">Usuń</button>
+                            <button type="button" class="btn btn-danger" style="" ng-click="deleteProduct(prod)">Usuń</button>
                         </td>
                     </tr>
                 </tbody>

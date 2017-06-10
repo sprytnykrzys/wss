@@ -54,6 +54,88 @@ angular.module('Wss.Services.ContentSrvc', [
             return promise;
         };
 
+        this.getProducts = function() {
+
+            var req = {
+                method: 'GET',
+                url: $rootScope.endpointURL + '/product',
+                headers: {
+                    "Content-Type": "text/plain"
+                }
+            };
+
+            var promise = $http(req);
+
+            promise.then(function(data) {
+                $localStorage.products = data.data.products;
+
+            });
+
+            return promise;
+        };
+
+        this.getCatalog = function() {
+
+            var req = {
+                method: 'GET',
+                url: $rootScope.endpointURL + '/catalog',
+                headers: {
+                    "Content-Type": "text/plain"
+                }
+            };
+
+            var promise = $http(req);
+
+            promise.then(function(data) {
+                $localStorage.catalog = data.data.catalog;
+
+            });
+
+            return promise;
+        };
+
+
+        this.sendSystemProvider = function(data) {
+
+            var req = {
+                method: 'POST',
+                url: $rootScope.endpointURL + '/system_provider',
+                data: data,
+                headers: {
+                    "Content-Type": "text/plain"
+                }
+            };
+
+            var promise = $http(req);
+
+            promise.then(function(data) {
+
+            });
+
+            return promise;
+        };
+
+        this.sendSystem = function(data) {
+
+            var req = {
+                method: 'POST',
+                url: $rootScope.endpointURL + '/system',
+                data: data,
+                headers: {
+                    "Content-Type": "text/plain"
+                }
+            };
+
+            var promise = $http(req);
+
+            promise.then(function(data) {
+
+            });
+
+            return promise;
+        };
+
+
         this.sendClient = function(data) {
 
             var req = {
@@ -68,6 +150,28 @@ angular.module('Wss.Services.ContentSrvc', [
             var promise = $http(req);
 
             promise.then(function(data) {
+
+            });
+
+            return promise;
+        };
+
+
+        this.updateClient = function(data, clientId) {
+
+            var req = {
+                method: 'POST',
+                url: $rootScope.endpointURL + '/client/' + clientId + '/',
+                data: data,
+                headers: {
+                    "Content-Type": "text/plain"
+                }
+            };
+
+            var promise = $http(req);
+
+            promise.then(function(data) {
+                // $localStorage.clients = data.data.clients;
 
             });
 
@@ -139,6 +243,65 @@ angular.module('Wss.Services.ContentSrvc', [
         };
 
 
+        this.sendProduct = function(data) {
 
+            var req = {
+                method: 'POST',
+                url: $rootScope.endpointURL + '/product',
+                data: data,
+                headers: {
+                    "Content-Type": "text/plain"
+                }
+            };
+
+            var promise = $http(req);
+
+            promise.then(function(data) {
+
+            });
+
+            return promise;
+        };
+
+        this.deleteProduct = function(data, prod) {
+
+            var req = {
+                method: 'POST',
+                url: $rootScope.endpointURL + '/product/' + prod.id + '/delete/',
+                data: data,
+                headers: {
+                    "Content-Type": "text/plain"
+                }
+            };
+
+            var promise = $http(req);
+
+            promise.then(function(data) {
+                // $localStorage.clients = data.data.clients;
+
+            });
+
+            return promise;
+        };
+
+        this.updateProduct = function(data) {
+
+            var req = {
+                method: 'POST',
+                url: $rootScope.endpointURL + '/product',
+                data: data,
+                headers: {
+                    "Content-Type": "text/plain"
+                }
+            };
+
+            var promise = $http(req);
+
+            promise.then(function(data) {
+
+            });
+
+            return promise;
+        };
     }
 ]);
