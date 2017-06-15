@@ -31,6 +31,22 @@ angular
 
             $scope.getProductsFromAPI();
 
+            $scope.getCatalogFromAPI = function() {
+                $scope.catalog = null;
+                // $scope.currentCategories = null;
+
+                ContentSrvc.getCatalog().then(function(data) {
+                    $scope.catalog = data.data.catalog;
+                    // $scope.currentCategories = data.data.categories;
+
+
+                }, function(data) {
+                    // Materialize.toast('Wystąpił błąd', 4000);
+                });
+            };
+
+            $scope.getCatalogFromAPI();
+
             $scope.newProduct = {
                 product: {
                     name: "",
@@ -38,7 +54,8 @@ angular
                     export_code: "",
                     price: "",
                     currency: "",
-                    measure_unit: ""
+                    measure_unit: "",
+                    id_system: ""
                 }
             }
 
@@ -66,6 +83,7 @@ angular
                     //         discount: ""
                     //     }
                     // };
+                    alert($scope.newProduct.product.id_system);
                     swal(
                         'Pomyślnie dodano produkt!',
                         '',
@@ -93,7 +111,7 @@ angular
                 $scope.newProduct.product.id = $scope.currentIdProduct;
                 ContentSrvc.updateProduct($scope.newProduct).then(function(data) {
                     $scope.getProductsFromAPI();
-                      $scope.newProduct.product.id = null;
+                    $scope.newProduct.product.id = null;
                     // $scope.getNestedCategoriesFromAPI();
                     // Materialize.toast('Zapisano!', 4000);
 
@@ -194,6 +212,20 @@ angular
                 $scope.currentIdProduct = '';
             }
 
+            $scope.chooseSystem = function(system){
+                alert('mati');
+            }
+
+            $scope.myFilter = function(element) {
+                var result = {};
+                angular.forEach(element, function(name, system) {
+                    alert("mati");
+                    if (!name.hasOwnProperty('name')) {
+                        result[system] = name;
+                    }
+                });
+                return result;
+            }
 
         }
     ]);

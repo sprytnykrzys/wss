@@ -10,9 +10,10 @@ angular
         '$localStorage',
         '$rootScope',
         '$location',
+        '$filter',
         '$window',
         'ContentSrvc',
-        function($scope, $state, $timeout, $localStorage, $rootScope, $location, $window, ContentSrvc) {
+        function($scope, $state, $timeout, $localStorage, $rootScope, $location, $filter, $window, ContentSrvc) {
 
             $scope.getCatalogFromAPI = function() {
                 $scope.catalog = null;
@@ -132,3 +133,6 @@ angular
             }
         }
     ]);
+
+
+

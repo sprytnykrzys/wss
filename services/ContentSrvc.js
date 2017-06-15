@@ -94,6 +94,26 @@ angular.module('Wss.Services.ContentSrvc', [
             return promise;
         };
 
+        
+        this.getSet = function() {
+
+            var req = {
+                method: 'GET',
+                url: $rootScope.endpointURL + '/products_set',
+                headers: {
+                    "Content-Type": "text/plain"
+                }
+            };
+
+            var promise = $http(req);
+
+            promise.then(function(data) {
+                $localStorage.set = data.data.set;
+
+            });
+
+            return promise;
+        };
 
         this.sendSystemProvider = function(data) {
 

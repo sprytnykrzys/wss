@@ -3,7 +3,7 @@
         <div class="col-lg-5 col-md-5 col-sm-7 col-xs-12">
             <label for="example-text-input" class="col-lg-4 col-md-5 col-sm-5 col-form-label input-label">Filtruj klientów :</label>
             <div class="col-lg-8 col-md-7 col-sm-7">
-                <input id="search-clients-input" class="form-control" type="text" id="example-text-input">
+                <input id="search-clients-input" class="form-control" type="text" ng-model="filterClient">
             </div>
             <label class="input-label col-lg-12 col-xs-12">Ilosć logowań klienta :</label>
             <label class="input-label col-lg-12 col-xs-12">Ilosć wygenerowanych ofert klienta :</label>
@@ -19,26 +19,11 @@
                         <th class="center">Data</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td class="td-line-height">Mark</td>
-                        <td class="td-line-height">Otto</td>
-                        <td class="td-line-height">@mdo</td>
-                    </tr>
-                    <tr>
-                        <td class="td-line-height">Mark Zadqaa</td>
-                        <td class="td-line-height">Otto adasda</td>
-                        <td class="td-line-height">@TwBootstrap dqvq</td>
-                    </tr>
-                    <tr>
-                        <td class="td-line-height">Jacob</td>
-                        <td class="td-line-height">Thornton</td>
-                        <td class="td-line-height">@fat</td>
-                    </tr>
-                    <tr>
-                        <td class="td-line-height">tekst</td>
-                        <td class="td-line-height">tekst</td>
-                        <td class="td-line-height">tekst</td>
+                <tbody ng-repeat="cli in clients | filter : filterClient">
+                    <tr ng-repeat="user in users" ng-if="cli.id == user.id_client">
+                        <td >{{cli.name}}</td>
+                        <td >{{user.email}}</td>
+                        <td >{{user.last_login | date:"dd/MM/yyyy"}}</td>
                     </tr>
                 </tbody>
             </table>

@@ -17,6 +17,22 @@ angular
             //  $scope.changeState = function(state) {
             //     $state.go(state);
             // }
+            $scope.getClientsFromAPI = function() {
+                $scope.clients = null;
+                // $scope.currentCategories = null;
+
+                ContentSrvc.getClients().then(function(data) {
+                    $scope.clients = data.data.clients;
+                    // $scope.currentCategories = data.data.categories;
+
+
+                }, function(data) {
+                    // Materialize.toast('Wystąpił błąd', 4000);
+                });
+            };
+
+            $scope.getClientsFromAPI();
+
 
             $scope.getUsersFromAPI = function() {
                 $scope.users = null;
@@ -33,6 +49,9 @@ angular
             };
 
             $scope.getUsersFromAPI();
+
+
+            $scope.filterClient = '';
 
 
         }
