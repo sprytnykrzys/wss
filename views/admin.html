@@ -1,14 +1,4 @@
 <div class="container">
-    <!--  <div id="upper-navbar" class="navbar">
-        <div class="navbar-header"> <a href="#" class="navbar-brand"><img src="img/logo.gif"></a>
-            <button class="navbar-toggle" data-toggle="collapse" data-target=".navHeaderCollapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-        </div>
-        <div class="collapse navbar-collapse navHeaderCollapse">
-            <ul class="nav navbar-nav navbar-left">
-                <li ng-repeat="item in upperMenuItems"><a ng-click="changeState(item.uiSref)" ng-class="{'active' : item.labelPl == 'Admin'}">{{item.labelPl}}</a></li>
-            </ul>
-        </div>
-    </div> -->
     <div id="upper-navbar-admin" class="navbar">
         <div class="navbar-header">
             <a href="#" class="navbar-brand"><img src="img/logo.gif"></a>
@@ -20,25 +10,10 @@
             </ul>
         </div>
     </div>
-    <!-- <hr id="menu-hr" class="my-4"> -->
-   <!--  <div id="lower-navbar" class="navbar">
-        <div class="navbar-header">
-            <a href="#" class="navbar-brand"></a>
-        </div>
-        <div class="collapse navbar-collapse navHeaderCollapse">
-            <ul class="nav navbar-nav navbar-left">
-                <li ng-repeat="item in lowerMenuItems"><a ng-click="changeState(item.uiSref)" ng-class="{'active' : currState == item.activeStateRule}">{{item.labelPl}}</a></li>
-            </ul>
-        </div>
-    </div> -->
-     <div id="lower-navbar-admin" class="navbar">
- <!--        <div class="navbar-header">
-            <a href="#" class="navbar-brand"><img src="img/logo.gif"></a>
-            <button class="navbar-toggle" data-toggle="collapse" data-target=".navHeaderCollapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-        </div> -->
+    <div id="lower-navbar-admin" class="navbar">
         <div class="collapse navbar-collapse navHeaderCollapse">
             <ul class="nav nav-tabs">
-                <li ng-repeat="item in lowerMenuItems" ng-class="{'active' : currState == item.activeStateRule}"><a ng-click="changeState(item.uiSref)"  ng-class="{'active' : currState == item.activeStateRule}">{{item.labelPl}}</a></li>
+                <li ng-repeat="item in lowerMenuItems" ng-class="{'active' : currState == item.activeStateRule}"><a ng-click="changeState(item.uiSref)" ng-class="{'active' : currState == item.activeStateRule}">{{item.labelPl}}</a></li>
             </ul>
         </div>
     </div>

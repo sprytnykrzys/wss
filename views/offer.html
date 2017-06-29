@@ -6,7 +6,14 @@
         </div>
         <div class="collapse navbar-collapse navHeaderCollapse">
             <ul class="nav nav-tabs">
-                <li ng-repeat="item in menuItems" ng-class="{'active' : currState == item.activeStateRule}"><a ng-click="changeState(item.uiSref)">{{item.labelPl}}</a></li>
+                <li ng-repeat="item in menuItems" ng-if="verifyMenu(item)" ng-class="{'active' : item.labelPl == 'Oferta' || currState == item.activeStateRule}"><a ng-click="changeState(item.uiSref)">{{item.labelPl}}</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="lower-navbar-admin" class="navbar" ng-if="whichUser()">
+        <div class="collapse navbar-collapse navHeaderCollapse">
+            <ul class="nav nav-tabs">
+                <li ng-repeat="item in lowerMenuItems" ng-class="{'active' : currState == item.activeStateRule}"><a ng-click="changeState(item.uiSref)" ng-class="{'active' : currState == item.activeStateRule}">{{item.labelPl}}</a></li>
             </ul>
         </div>
     </div>

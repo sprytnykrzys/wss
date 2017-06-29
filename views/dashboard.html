@@ -1,29 +1,98 @@
 <div class="container">
     <div class="row">
-        <div class="col-lg-5 col-md-5 col-sm-7 col-xs-12">
-            <label for="example-text-input" class="col-lg-4 col-md-5 col-sm-5 col-form-label input-label">Filtruj klientów :</label>
-            <div class="col-lg-8 col-md-7 col-sm-7">
-                <input id="search-clients-input" class="form-control" type="text" ng-model="filterClient">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 pull-left">
+                <div class="panel panel-default panel-dashboard first-panel">
+                    <div class="panel-body panel-body-dashboard center">
+                        <i class="fa fa-user panel-icons" aria-hidden="true"></i>
+                        <h4 class="panel-h4" style="color:#003399;">{{currentLoginsAmount}}</h4>
+                    </div>
+                    <div class="panel-footer first-panel">
+                        <p>Ilość logowań klienta</p>
+                        <i class="fa fa-bar-chart pull-right" aria-hidden="true"></i>
+                    </div>
+                </div>
             </div>
-            <label class="input-label col-lg-12 col-xs-12">Ilosć logowań klienta :</label>
-            <label class="input-label col-lg-12 col-xs-12">Ilosć wygenerowanych ofert klienta :</label>
-            <label class="input-label col-lg-12 col-xs-12">Ilosć logowań wszystkich klientów :</label>
-            <label class="input-label col-lg-12 col-xs-12">Ilosć wszystkich wygenerowanych ofert :</label>
+            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 pull-left">
+                <div class="panel panel-default panel-dashboard second-panel">
+                    <div class="panel-body panel-body-dashboard center">
+                        <i class="fa fa-user panel-icons" aria-hidden="true"></i>
+                        <h4 class="panel-h4" style="color: #c62828;">{{currentOffersAmount}}</h4>
+                    </div>
+                    <div class="panel-footer second-panel">
+                        <p>Ilość ofert klienta</p>
+                        <i class="fa fa-bar-chart pull-right" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 pull-left">
+                <div class="panel panel-default panel-dashboard third-panel">
+                    <div class="panel-body panel-body-dashboard center">
+                        <i class="fa fa-users panel-icons" aria-hidden="true"></i>
+                        <h4 class="panel-h4" style="color: #43a047;">{{generalStats.all_logins_count}}</h4>
+                    </div>
+                    <div class="panel-footer third-panel">
+                        <p>Ilość logowań klientów</p>
+                        <i class="fa fa-bar-chart pull-right" aria-hidden="true"></i></div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 pull-left">
+                <div class="panel panel-default panel-dashboard fourth-panel">
+                    <div class="panel-body panel-body-dashboard center">
+                        <i class="fa fa-users panel-icons" aria-hidden="true"></i>
+                        <h4 class="panel-h4" style="color: #f9a825;">{{generalStats.all_offers_count}}</h4>
+                    </div>
+                    <div class="panel-footer fourth-panel">
+                        <p>Ilość ofert klientów</p>
+                        <i class="fa fa-bar-chart pull-right" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-2 col-sm-1">
+        </div>
+        <div class="col-lg-6 col-md-8 col-sm-10">
+            <div class="panel panel-default panel-dashboard">
+                <div class="panel-body center">
+                    <label><i class="fa fa-search" aria-hidden="true"></i> Filtruj klientów</label>
+                    <input class="form-control dashboard-input" type="text" ng-model="filterClient" ng-keyup="checkLoginsCount()">
+                </div>
+                <!-- <div class="panel-footer">Panel Footer</div> -->
+            </div>
+            <!--  <label for="example-text-input" class="col-lg-5 col-md-6 col-sm-5 col-form-label input-label"><i class="fa fa-search" aria-hidden="true"></i> Filtruj klientów :</label>
+            <div class="col-lg-7 col-md-6 col-sm-7">
+                <input id="search-clients-input" class="form-control" type="text" ng-model="filterClient" ng-keyup="checkLoginsCount()">
+            </div> -->
+        </div>
+        <div class="col-lg-3 col-md-2 col-sm-1">
+        </div>
+        <div class="col-lg-12">
             <table id="dashboard-table" class="table table-bordered table-hover">
                 <thead>
                     <tr>
-                        <th class="center">Klient</th>
-                        <th class="center">Email</th>
-                        <th class="center">Data</th>
+                        <th class="center"><i class="fa fa-user" aria-hidden="true"></i> Klient
+                        </th>
+                        <th class="center">
+                            <i class="fa fa-envelope" aria-hidden="true"></i> Email
+                        </th>
+                        <th class="center"><i class="fa fa-calendar" aria-hidden="true"></i> Data
+                        </th>
                     </tr>
                 </thead>
-                <tbody ng-repeat="cli in clients | filter : filterClient">
-                    <tr ng-repeat="user in users" ng-if="cli.id == user.id_client">
-                        <td >{{cli.name}}</td>
-                        <td >{{user.email}}</td>
-                        <td >{{user.last_login | date:"dd/MM/yyyy"}}</td>
+                <tbody ng-repeat="user in users">
+                    <tr ng-repeat="cli in clients | filter : filterClient" ng-if="cli.id == user.id_client && if20Logs">
+                        <td ng-click="filter(cli)">{{cli.name}}</td>
+                        <td>{{user.email}}</td>
+                        <td>{{user.last_login | date:"dd/MM/yyyy"}}</td>
+                    </tr>
+                </tbody>
+                <tbody ng-repeat="cli in clients | filter : filterClient" ng-if="!if20Logs">
+                    <tr ng-repeat="user in cli.users">
+                        <td ng-click="filter(user)">{{cli.name}}</td>
+                        <td>{{user.email}}</td>
+                        <td>{{user.last_login | date:"dd/MM/yyyy"}}</td>
                     </tr>
                 </tbody>
             </table>

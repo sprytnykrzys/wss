@@ -1,81 +1,79 @@
 <div class="container">
+    <div class="row" ng-if="currentOrders.length == 0">
+        <div class="main-section center">
+            <h5 class="main-section-h5">Zamówienie</h5>
+            <p style="margin-top: 20px; margin-bottom: 20px;">Brak zamówień</p>
+        </div>
+    </div>
+    <div class="row center" ng-if="currentOrders.length > 0" style="margin-bottom: 20px;">
+        <button type="submit" id="print-button" class="btn btn-primary" ng-click="printOrder()"><i class="fa fa-print fa-lg" aria-hidden="true"></i>
+ Drukuj</button>
+        <label>Dane użytkownika:</label>
+        <p>Email: {{userData.auth.email}}</p>
+       
+    </div>
     <div class="row">
+         <p class="text-left" id="order-text">Podane ceny nie zawierają podatku VAT i mogą ulec zmianie bez uprzedzenia w zależności od zmian cen wprowadzonych przez producenta, kursu euro, jak również zmian w podatkach i przepisach celnych. Przedstawione informacje są aktualne w chwili ukazania się niniejszej publikacji. WSS zastrzega sobie prawo do zmian w ofercie w każdej chwili i to zarówno w zakresie oferowanych produktów jak i ich specyfikacji. Niniejszy cennik nie stanowi oferty w rozumieniu prawa i publikowany jest jedynie do celów informacyjnych bez żadnej odpowiedzialności.</p>
+    </div>
+    <div class="row" ng-repeat="order in currentOrders" style="margin-bottom: 30px;">
         <div class="col-lg-12">
             <div class="main-section">
-                <h5 class="main-section-h5">Zestawienie 1</h5>
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-top: 20px;">
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 search-product">
-                            <span class="product-number">1</span>
-                            <img src="img/kategorie.png" class="search-img">
-                        </div>
-                        <div class="col-lg-6 col-md-8 col-sm-8 col-xs-8 product-div">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 product-information">
-                                <h4>Kod zestawu</h4>
-                                <h5 class="order-h5">Nazwa zestawu</h5>
-                                <h5 class="order-h5">Ilość, Cena</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-top: 20px;">
-                        <table id="dashboard-table" class="table table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th class="center">Kod w produktu</th>
-                                    <th class="center">Nazwa produktu</th>
-                                    <th class="center">Ilość</th>
-                                </tr>
-                            </thead>
+                <h5 class="main-section-h5">{{order.name}}</h5>
+                <div class="row center">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center" ng-repeat="set in order.products" ng-if="set.type == 'Zestaw' || set.type == 'Zestaw-Paniczny'">
+                        <label style="margin-top: 10px;">Zestaw "{{set.name}}"</label>
+                        <table class="table table-bordered table-hover">
                             <tbody>
                                 <tr>
-                                    <td class="td-line-height">Mark</td>
-                                    <td class="td-line-height">Otto</td>
-                                    <td class="td-line-height">Otto</td>
+                                    <td class="td-order">
+                                        <a href="{{set.image}}" class="lightbox-link" data-lightbox="{{set.name}}">
+                                            <img ng-src="{{set.image}}" class="table-order-set-img">
+                                        </a>
+                                        {{set.name}}
+                                    </td>
+                                    <td class="mobile-order-td">Kod: {{set.code}}</td>
+                                    <td class="mobile-order-td">Ilość: {{set.amount}}</td>
                                 </tr>
-                                <tr>
-                                    <td class="td-line-height">Mark Zadqaa</td>
-                                    <td class="td-line-height">Otto adasda</td>
-                                    <td class="td-line-height">Otto adasda</td>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered table-hover">
+                            <tbody>
+                                <tr ng-repeat="prod in set.products">
+                                    <td class="td-order">
+                                        <a href="{{prod.image}}" class="lightbox-link" data-lightbox="{{prod.name}}">
+                                            <img ng-src="{{prod.image}}" class="table-order-product-img">
+                                        </a>
+                                        {{prod.name}}
+                                    </td class="mobile-order-td">
+                                    <td class="mobile-order-td">Kod: {{prod.code}}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <hr id="search-hr">
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px;">
-                        <div class="col-lg-6 col-md-4 col-sm-4 col-xs-4 search-product">
-                            <span class="product-number">1</span>
-                            <img src="img/kategorie.png" class="search-img">
-                        </div>
-                        <div class="col-lg-6 col-md-8 col-sm-8 col-xs-8 product-div">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 product-information">
-                                <h4>Kod produktu / Kod zestawu</h4>
-                                <h5>Nazwa produktu / Nazwa zestawu</h5>
-                                <h5>Ilość / Cena</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px;">
-                        <div class="col-lg-6 col-md-4 col-sm-4 col-xs-4 search-product">
-                            <span class="product-number">2</span>
-                            <img src="img/kategorie.png" class="search-img">
-                        </div>
-                        <div class="col-lg-6 col-md-8 col-sm-8 col-xs-8 product-div">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 product-information">
-                                <h4>Kod produktu / Kod zestawu</h4>
-                                <h5>Nazwa produktu / Nazwa zestawu</h5>
-                                <h5>Ilość / Cena</h5>
-                            </div>
-                        </div>
+                <div class="row ">
+                    <label style="margin-top: 10px;">Pojedyncze produkty</label>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <table id="dashboard-table" class="table table-bordered table-hover">
+                            <tbody>
+                                <tr ng-repeat="prod in order.products" ng-if="!prod.type">
+                                    <td class="td-order">
+                                        <a href="{{prod.image}}" class="lightbox-link" data-lightbox="{{prod.name}}">
+                                            <img ng-src="{{prod.image}}" class="table-order-product-img">
+                                        </a>
+                                        {{prod.name}}
+                                    </td>
+                                    <td class="mobile-order-td">Kod: {{prod.code}}</td>
+                                    <td class="mobile-order-td">Ilość: {{prod.amount}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row" style="margin-top: 30px; margin-bottom: 30px;">
+    <!-- <div class="row">
         <div class="col-lg-12">
             <div class="main-section">
                 <h5 class="main-section-h5">Zestawienie 2</h5>
@@ -150,5 +148,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>

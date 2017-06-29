@@ -104,21 +104,46 @@ angular.module('Wss.Routes', [
             $rootScope.currState = to.name;
             $rootScope.parentCurrState = to.parent;
 
+            if ($localStorage.user && !$rootScope.user) {
+                $rootScope.user = $localStorage.user;
+            }
 
             //TODO - should be moved to config file
 
             $rootScope.endpointURL = 'http://wss-app.k-org.pl';
 
 
-            if (to.name == 'admin') {
+            // if (to.name == 'admin') {
+            //     e.preventDefault();
+            //     $state.go('dashboard');
+            // }
+
+            // if (to.name == 'offer') {
+            //     e.preventDefault();
+            //     $state.go('search');
+            // }
+
+            //  if ((to.name == 'admin') && (!$localStorage.user || $localStorage.user.who !== "admin")) {
+            //     e.preventDefault();
+            //     $state.go('login');
+            // }
+            if (((to.name != 'login') && (to.parent == 'admin' || to.name == 'admin')) && (!$localStorage.user || $localStorage.user.who !== "admin")) {
+                e.preventDefault();
+                $state.go('login');
+            } else if (($localStorage.user && $localStorage.user.who == "admin") && (to.name == 'admin')) {
                 e.preventDefault();
                 $state.go('dashboard');
             }
 
-            if (to.name == 'offer') {
+            if (((to.name != 'login') && (to.parent == 'offer' || to.name == 'offer')) && (!$localStorage.user)) {
+                e.preventDefault();
+                $state.go('login');
+            } else if ($localStorage.user && to.name == 'offer') {
                 e.preventDefault();
                 $state.go('search');
             }
+
+
 
 
 

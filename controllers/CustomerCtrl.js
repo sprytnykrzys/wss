@@ -17,44 +17,40 @@ angular
 
             $scope.getClientsFromAPI = function() {
                 $scope.clients = null;
-                // $scope.currentCategories = null;
-
                 ContentSrvc.getClients().then(function(data) {
                     $scope.clients = data.data.clients;
-                    // $scope.currentCategories = data.data.categories;
-
 
                 }, function(data) {
-                    // Materialize.toast('Wystąpił błąd', 4000);
+                    swal({
+                        title: 'Wystąpił błąd!',
+                        timer: 1200
+                    })
+                });
+            };
+
+            $scope.getUsersFromAPI = function() {
+                $scope.users = null;
+                ContentSrvc.getUsers().then(function(data) {
+                    $scope.users = data.data.users;
+
+                }, function(data) {
+                    swal({
+                        title: 'Wystąpił błąd!',
+                        timer: 1200
+                    })
                 });
             };
 
             $scope.getClientsFromAPI();
-
-            $scope.getUsersFromAPI = function() {
-                $scope.users = null;
-                // $scope.currentCategories = null;
-
-                ContentSrvc.getUsers().then(function(data) {
-                    $scope.users = data.data.users;
-                    // $scope.currentCategories = data.data.categories;
-
-
-                }, function(data) {
-                    // Materialize.toast('Wystąpił błąd', 4000);
-                });
-            };
-
             $scope.getUsersFromAPI();
 
             $scope.correctClientName = function() {
                 for (var i = 0; i < $localStorage.clients.length; i++) {
                     if ($localStorage.clients[i].name == $scope.newClient.client.name) {
-                        $scope.newUser.id_client = $localStorage.clients[i].id;
+                        $scope.newUser.user.id_client = $localStorage.clients[i].id;
                         return false;
-
                     } else {
-                        $scope.newUser.id_client = null;
+                        $scope.newUser.user.id_client = null;
                     }
                 }
                 return true;
@@ -63,23 +59,15 @@ angular
             $scope.correctUserInTable = function(data) {
                 if (data == undefined) {
                     return false;
-
                 }
-                if (data == $scope.newUser.id_client) {
+                if (data == $scope.newUser.user.id_client) {
                     return true;
 
                 }
 
-
-
-
             }
 
-
-
-
             $scope.saveChanges = function() {
-
                 for (var i = 0; i < $localStorage.clients.length; i++) {
                     if ($localStorage.clients[i].name == $scope.newClient.client.name) {
                         $scope.currentIdClient = $localStorage.clients[i].id
@@ -87,18 +75,14 @@ angular
                         return true;
                     }
                 }
-
                 $scope.addClient();
-
             }
-
 
             $scope.editClient = function(client) {
                 $scope.newClient.client.name = client.name;
                 $scope.newClient.client.discount = client.discount;
                 $scope.currentIdClient = client.id;
             }
-
 
             $scope.newClient = {
                 client: {
@@ -108,24 +92,17 @@ angular
             };
 
             $scope.newUser = {
-                email: "",
-                password: "",
-                role: "client",
-                key: "rmuwt6546wel4t65"
+                user: {
+                    email: "",
+                    password: "",
+                    role: "client",
+                    key: "rmuwt6546wel4t65"
+                }
             }
 
             $scope.addClient = function() {
                 ContentSrvc.sendClient($scope.newClient).then(function(data) {
                     $scope.getClientsFromAPI();
-                    // $scope.getNestedCategoriesFromAPI();
-                    // Materialize.toast('Zapisano!', 4000);
-
-                    // $scope.newClient = {
-                    //     client: {
-                    //         name: "",
-                    //         discount: ""
-                    //     }
-                    // };
                     swal(
                         'Pomyślnie dodano klienta!',
                         '',
@@ -135,16 +112,19 @@ angular
                     if (data.status == 403) {
                         $localStorage.user = null;
                         $rootScope.user = null;
-                        // Materialize.toast('Zostałeś wylogowany', 4000);
+                        swal({
+                            title: 'Zostałeś wylogowany!',
+                            timer: 1200
+                        })
 
-                        $state.go('adminLogin');
+                        $state.go('login');
                     } else {
+                        $localStorage.user.auth.token = data.data.auth.token;
                         swal(
-                                'Nie udało się dodać klienta!',
-                                '',
-                                'error'
-                            )
-                            // $scope.getCategoriesFromAPI();
+                            'Nie udało się dodać klienta!',
+                            '',
+                            'error'
+                        )
                     }
                 });
             }
@@ -152,15 +132,6 @@ angular
             $scope.updateClient = function() {
                 ContentSrvc.updateClient($scope.newClient, $scope.currentIdClient).then(function(data) {
                     $scope.getClientsFromAPI();
-                    // $scope.getNestedCategoriesFromAPI();
-                    // Materialize.toast('Zapisano!', 4000);
-
-                    // $scope.newClient = {
-                    //     client: {
-                    //         name: "",
-                    //         discount: ""
-                    //     }
-                    // };
                     swal(
                         'Pomyślnie zaktualizowao!',
                         '',
@@ -170,16 +141,19 @@ angular
                     if (data.status == 403) {
                         $localStorage.user = null;
                         $rootScope.user = null;
-                        // Materialize.toast('Zostałeś wylogowany', 4000);
+                        swal({
+                            title: 'Zostałeś wylogowany!',
+                            timer: 1200
+                        })
 
-                        $state.go('adminLogin');
+                        $state.go('login');
                     } else {
+                        $localStorage.user.auth.token = data.data.auth.token;
                         swal(
-                                'Nie udało się zaktualizować!',
-                                '',
-                                'error'
-                            )
-                            // $scope.getCategoriesFromAPI();
+                            'Nie udało się zaktualizować!',
+                            '',
+                            'error'
+                        )
                     }
                 });
             }
@@ -188,43 +162,37 @@ angular
                 ContentSrvc.sendUser($scope.newUser).then(function(data) {
                     $scope.getClientsFromAPI();
                     $scope.getUsersFromAPI();
+
                     $scope.newUser = {
-                        email: "",
-                        password: "",
-                        role: "client",
-                        key: "rmuwt6546wel4t65"
+                        user: {
+                            email: "",
+                            password: "",
+                            role: "client",
+                            key: "rmuwt6546wel4t65"
+                        }
                     }
-
                     swal(
-                            'Pomyślnie dodano użytkownika!',
-                            '',
-                            'success'
-                        )
-                        // $scope.getNestedCategoriesFromAPI();
-                        // Materialize.toast('Zapisano!', 4000);
-
-
-                    // $scope.newClient = {
-                    //     client: {
-                    //         name: "",
-                    //         discount: ""
-                    //     }
-                    // };
+                        'Pomyślnie dodano użytkownika!',
+                        '',
+                        'success'
+                    )
                 }, function(data) {
                     if (data.status == 403) {
                         $localStorage.user = null;
                         $rootScope.user = null;
-                        // Materialize.toast('Zostałeś wylogowany', 4000);
+                        swal({
+                            title: 'Zostałeś wylogowany!',
+                            timer: 1200
+                        })
 
-                        $state.go('adminLogin');
+                        $state.go('login');
                     } else {
+                        $localStorage.user.auth.token = data.data.auth.token;
                         swal(
-                                'Nie udało się dodać użytkownika!',
-                                '',
-                                'error'
-                            )
-                            // Materialize.toast('Wystąpił błąd', 4000);
-                            // $scope.getCategoriesFromAPI();
+                            'Nie udało się dodać użytkownika!',
+                            '',
+                            'error'
+                        )
                     }
                 });
             }
@@ -247,8 +215,6 @@ angular
                     ContentSrvc.deleteClient($scope.clientId).then(function(data) {
                         $scope.getClientsFromAPI();
                         $scope.clearInputs();
-                        // $scope.getNestedCategoriesFromAPI();
-                        // Materialize.toast('Zapisano!', 4000);
                         swal(
                             'Usunięto!',
                             '',
@@ -259,12 +225,19 @@ angular
                         if (data.status == 403) {
                             $localStorage.user = null;
                             $rootScope.user = null;
-                            // Materialize.toast('Zostałeś wylogowany', 4000);
+                            swal({
+                                title: 'Zostałeś wylogowany!',
+                                timer: 1200
+                            })
 
-                            $state.go('adminLogin');
+                            $state.go('login');
                         } else {
-                            // Materialize.toast('Wystąpił błąd', 4000);
-                            // $scope.getCategoriesFromAPI();
+                            $localStorage.user.auth.token = data.data.auth.token;
+                            swal(
+                                'Nie udało się usunąć klienta!',
+                                '',
+                                'error'
+                            )
                         }
                     });
 
@@ -289,39 +262,39 @@ angular
                     }
                     ContentSrvc.deleteUser($scope.userId).then(function(data) {
                         $scope.getUsersFromAPI();
-
-                        // $scope.getNestedCategoriesFromAPI();
-                        // Materialize.toast('Zapisano!', 4000);
                         swal(
                             'Usunięto!',
                             '',
                             'success'
                         )
 
-
                     }, function(data) {
                         if (data.status == 403) {
                             $localStorage.user = null;
                             $rootScope.user = null;
-                            // Materialize.toast('Zostałeś wylogowany', 4000);
+                            swal({
+                                title: 'Zostałeś wylogowany!',
+                                timer: 1200
+                            })
 
-                            $state.go('adminLogin');
+                            $state.go('login');
                         } else {
-                            // Materialize.toast('Wystąpił błąd', 4000);
-                            // $scope.getCategoriesFromAPI();
+                            $localStorage.user.auth.token = data.data.auth.token;
+                            swal(
+                                'Nie udało się usunąć użytkownika!',
+                                '',
+                                'error'
+                            )
                         }
                     });
 
                 })
             }
 
-
             $scope.clearInputs = function() {
                 $scope.newClient.client.name = '';
                 $scope.newClient.client.discount = '';
             }
-
-
 
         }
     ]);

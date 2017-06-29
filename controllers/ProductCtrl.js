@@ -17,34 +17,31 @@ angular
 
             $scope.getProductsFromAPI = function() {
                 $scope.products = null;
-                // $scope.currentCategories = null;
-
                 ContentSrvc.getProducts().then(function(data) {
                     $scope.products = data.data.products;
-                    // $scope.currentCategories = data.data.categories;
-
 
                 }, function(data) {
-                    // Materialize.toast('Wystąpił błąd', 4000);
+                    swal({
+                        title: 'Wystąpił błąd!',
+                        timer: 1200
+                    })
+                });
+            };
+
+            $scope.getCatalogFromAPI = function() {
+                $scope.catalog = null;
+                ContentSrvc.getCatalog().then(function(data) {
+                    $scope.catalog = data.data.catalog;
+
+                }, function(data) {
+                    swal({
+                        title: 'Wystąpił błąd!',
+                        timer: 1200
+                    })
                 });
             };
 
             $scope.getProductsFromAPI();
-
-            $scope.getCatalogFromAPI = function() {
-                $scope.catalog = null;
-                // $scope.currentCategories = null;
-
-                ContentSrvc.getCatalog().then(function(data) {
-                    $scope.catalog = data.data.catalog;
-                    // $scope.currentCategories = data.data.categories;
-
-
-                }, function(data) {
-                    // Materialize.toast('Wystąpił błąd', 4000);
-                });
-            };
-
             $scope.getCatalogFromAPI();
 
             $scope.newProduct = {
@@ -62,6 +59,7 @@ angular
             $scope.saveChanges = function() {
                 for (var i = 0; i < $localStorage.products.length; i++) {
                     if ($localStorage.products[i].code == $scope.newProduct.product.code) {
+                        $scope.currentIdProduct = $localStorage.products[i].id
                         $scope.updateProduct();
                         return true;
                     }
@@ -72,18 +70,43 @@ angular
 
 
             $scope.addProduct = function() {
-                ContentSrvc.sendProduct($scope.newProduct).then(function(data) {
-                    $scope.getProductsFromAPI();
-                    // $scope.getNestedCategoriesFromAPI();
-                    // Materialize.toast('Zapisano!', 4000);
+                var selectedFile = document.getElementById('newFile').files[0];
+                if (typeof selectedFile == 'undefined') {
+                    $scope.newProduct.product.image = null;
+                    $scope.sendProductService($scope.newProduct);
+                } else {
+                    selectedFile.convertToBase64(function(base) {
+                        base = base.substring(base.indexOf(';base64,') + 8, base.length);
+                        var base64 = base;
+                        $scope.newProduct.product.image = base64;
+                        $scope.sendProductService($scope.newProduct);
+                    });
+                }
 
-                    // $scope.newClient = {
-                    //     client: {
-                    //         name: "",
-                    //         discount: ""
-                    //     }
-                    // };
-                    alert($scope.newProduct.product.id_system);
+            }
+
+            $scope.updateProduct = function() {
+                $scope.newProduct.product.id = $scope.currentIdProduct;
+                var selectedFile = document.getElementById('newFile').files[0];
+                if (typeof selectedFile == 'undefined') {
+                    $scope.newProduct.product.image = null;
+                    $scope.updateProductService($scope.newProduct);
+                } else {
+                    selectedFile.convertToBase64(function(base) {
+                        base = base.substring(base.indexOf(';base64,') + 8, base.length);
+                        var base64 = base;
+                        $scope.newProduct.product.image = base64;
+                        $scope.updateProductService($scope.newProduct);
+                    });
+                }
+            }
+
+            $scope.sendProductService = function(data) {
+                if($scope.newProduct.product.id_system == ""){
+                    $scope.newProduct.product.id_system = null;
+                }
+                ContentSrvc.sendProduct(data).then(function(data) {
+                    $scope.getProductsFromAPI();
                     swal(
                         'Pomyślnie dodano produkt!',
                         '',
@@ -93,34 +116,25 @@ angular
                     if (data.status == 403) {
                         $localStorage.user = null;
                         $rootScope.user = null;
-                        // Materialize.toast('Zostałeś wylogowany', 4000);
-
-                        $state.go('adminLogin');
+                        swal({
+                            title: 'Zostałeś wylogowany!',
+                            timer: 1200
+                        })
                     } else {
+                        $localStorage.user.auth.token = data.data.auth.token;
                         swal(
-                                'Nie udało się dodać produktu!',
-                                '',
-                                'error'
-                            )
-                            // $scope.getCategoriesFromAPI();
+                            'Nie udało się dodać produktu!',
+                            '',
+                            'error'
+                        )
                     }
                 });
             }
 
-            $scope.updateProduct = function() {
-                $scope.newProduct.product.id = $scope.currentIdProduct;
-                ContentSrvc.updateProduct($scope.newProduct).then(function(data) {
+            $scope.updateProductService = function(data) {
+                ContentSrvc.updateProduct(data).then(function(data) {
                     $scope.getProductsFromAPI();
                     $scope.newProduct.product.id = null;
-                    // $scope.getNestedCategoriesFromAPI();
-                    // Materialize.toast('Zapisano!', 4000);
-
-                    // $scope.newClient = {
-                    //     client: {
-                    //         name: "",
-                    //         discount: ""
-                    //     }
-                    // };
                     swal(
                         'Pomyślnie zaktualizowano produkt!',
                         '',
@@ -130,16 +144,17 @@ angular
                     if (data.status == 403) {
                         $localStorage.user = null;
                         $rootScope.user = null;
-                        // Materialize.toast('Zostałeś wylogowany', 4000);
-
-                        $state.go('adminLogin');
+                        swal({
+                            title: 'Zostałeś wylogowany!',
+                            timer: 1200
+                        })
                     } else {
+                        $localStorage.user.auth.token = data.data.auth.token;
                         swal(
                                 'Nie udało się zaktualizować produktu!',
                                 '',
                                 'error'
                             )
-                            // $scope.getCategoriesFromAPI();
                     }
                 });
             }
@@ -166,9 +181,6 @@ angular
                     ContentSrvc.deleteProduct($scope.productToDelete, prod).then(function(data) {
                         $scope.getProductsFromAPI();
                         $scope.clearInputs();
-                        // $scope.getNestedCategoriesFromAPI();
-                        // Materialize.toast('Zapisano!', 4000);
-
                         swal(
                             'Usunięto!',
                             '',
@@ -179,12 +191,17 @@ angular
                         if (data.status == 403) {
                             $localStorage.user = null;
                             $rootScope.user = null;
-                            // Materialize.toast('Zostałeś wylogowany', 4000);
-
-                            $state.go('adminLogin');
+                            swal({
+                                title: 'Zostałeś wylogowany!',
+                                timer: 1200
+                            })
                         } else {
-                            // Materialize.toast('Wystąpił błąd', 4000);
-                            // $scope.getCategoriesFromAPI();
+                            $localStorage.user.auth.token = data.data.auth.token;
+                            swal(
+                                'Nie udało się usunąć produktu!',
+                                '',
+                                'error'
+                            )
                         }
                     });
 
@@ -192,39 +209,41 @@ angular
             }
 
             $scope.editProduct = function(prod) {
-                $scope.newProduct.product.name = prod.name;
-                $scope.newProduct.product.code = prod.code;
-                $scope.newProduct.product.export_code = prod.export_code;
-                $scope.newProduct.product.price = prod.price;
-                $scope.newProduct.product.currency = prod.currency;
-                $scope.newProduct.product.measure_unit = prod.measure_unit;
                 $scope.currentIdProduct = prod.id;
-
+                $scope.newProduct = {
+                    product: {
+                        name: prod.name,
+                        code: prod.code,
+                        export_code: prod.export_code,
+                        price: prod.price,
+                        currency: prod.currency,
+                        measure_unit: prod.measure_unit,
+                        id_system: prod.id_system
+                    }
+                }
             }
 
             $scope.clearInputs = function() {
-                $scope.newProduct.product.name = '';
-                $scope.newProduct.product.code = '';
-                $scope.newProduct.product.export_code = '';
-                $scope.newProduct.product.price = '';
-                $scope.newProduct.product.currency = '';
-                $scope.newProduct.product.measure_unit = '';
                 $scope.currentIdProduct = '';
-            }
-
-            $scope.chooseSystem = function(system){
-                alert('mati');
-            }
-
-            $scope.myFilter = function(element) {
-                var result = {};
-                angular.forEach(element, function(name, system) {
-                    alert("mati");
-                    if (!name.hasOwnProperty('name')) {
-                        result[system] = name;
+                $scope.newProduct = {
+                    product: {
+                        name: "",
+                        code: "",
+                        export_code: "",
+                        price: "",
+                        currency: "",
+                        measure_unit: "",
+                        id_system: ""
                     }
-                });
-                return result;
+                }
+            }
+
+            File.prototype.convertToBase64 = function(callback) {
+                var FR = new FileReader();
+                FR.onload = function(e) {
+                    callback(e.target.result)
+                };
+                FR.readAsDataURL(this);
             }
 
         }

@@ -3,218 +3,186 @@
         <div class="panel-group" id="accordion">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4 class="panel-title center">
-                        <a data-toggle="collapse" data-parent="#accordion" data-target="#collapse1">
-                        Opis</a>
+                    <h4 class="panel-title center" data-toggle="collapse" data-parent="#accordion" data-target="#collapse1">
+                        Opis
                       </h4>
                 </div>
                 <div id="collapse1" class="panel-collapse collapse in">
-                    <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-3 col-xs-2"></div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-8">
+                                <form>
+                                    <div class="form-group center">
+                                        <label>Nazwa Zamówienia</label>
+                                        <input class="form-control" placeholder="" ng-model="newOrder.name">
+                                    </div>
+                                    <div class="form-group center">
+                                        <label>Data zamówienia</label>
+                                        <p>{{newOrder.date | date:"dd/MM/yyyy"}}</p>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-3 col-xs-2"></div>
+                        </div>
+                        <div class="row" style="margin-top: 30px;">
+                            <div class="col-lg-4 col-md-4 col-sm-2 col-xs-1"></div>
+                            <div class="col-lg-4 col-md-4 col-sm-8 col-xs-10 center">
+                                <label>Wszystkie zamówienia</label>
+                                <p ng-if="currentOrders.length == 0">Brak zapisanych zamówień</p>
+                                <table class="table table-bordered table-hover" ng-if="currentOrders.length > 0">
+                                    <thead>
+                                        <tr>
+                                            <th class="center">Nazwa zamówienia</th>
+                                            <th class="center">Akcja</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="order in currentOrders">
+                                            <td>{{order.name}}</td>
+                                            <td class="delete-button">
+                                                <button type="button" class="btn btn-danger" ng-click="deleteOrder($index)"><i class="fa fa-trash-o fa-lg"></i> Usuń</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <button type="submit" id="login-submit-button" class="btn btn-primary center-block" ng-click="descriptionFurther()" style="margin-top: 40px;">Dalej <i class="fa fa-angle-double-right fa-lg" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-2 col-xs-1"></div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title center">
-                        <a data-toggle="collapse" data-parent="#accordion" data-target="#collapse2">
-                        Wyszukaj</a>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title center" data-toggle="collapse" data-parent="#accordion" data-target="#collapse2">
+                        Wyszukaj
                       </h4>
+                    </div>
+                    <div id="collapse2" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-3 col-xs-2"></div>
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-8">
+                                    <form>
+                                        <div class="form-group center">
+                                            <label>Kod produktu/zestawu</label>
+                                            <input class="form-control" ng-model="searchByInputs.code">
+                                        </div>
+                                        <div class="form-group center">
+                                            <label>Nazwa produktu/zestawu</label>
+                                            <input class="form-control" ng-model="searchByInputs.name">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-3 col-xs-2"></div>
+                            </div>
+                            <div class="row" style="margin-top: 30px;">
+                                <div class="col-lg-3 col-md-3 col-sm-2"></div>
+                                <div class="col-lg-6 col-md-6 col-sm-8 center">
+                                    <label>Zamówienie "{{newOrder.name}}"</label>
+                                    <p ng-if="newOrder.products.length == 0">Brak produktów w zamówieniu</p>
+                                    <table class="table table-bordered table-hover table-responsive" ng-if="newOrder.products.length >0">
+                                        <thead>
+                                            <tr>
+                                                <th class="center">Typ</th>
+                                                <th class="center">Nazwa</th>
+                                                <th class="center">Kod</th>
+                                                <th class="center">Ilość</th>
+                                                <th class="center">Akcja</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="prod in newOrder.products">
+                                                <td ng-if="!prod.type">Produkt</td>
+                                                <td ng-if="prod.type">{{prod.type}}</td>
+                                                <td>{{prod.name}}</td>
+                                                <td>{{prod.code}}</td>
+                                                <td>{{prod.amount}}</td>
+                                                <td class="delete-button">
+                                                    <button type="button" class="btn btn-danger" ng-click="deleteProductFromTable($index)"><i class="fa fa-trash-o fa-lg"></i> Usuń</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-2"></div>
+                            </div>
+                            <div class="center" style="padding-bottom: 10px;">
+                                <hr id="search-hr">
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-left offer-products" ng-repeat="prod in products | filter :{name: searchByInputs.name, code:searchByInputs.code}">
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 search-product">
+                                        <a href="{{prod.image}}" data-lightbox="{{prod.name}}">
+                                            <img ng-src="{{prod.image}}" class="search-img">
+                                        </a>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 product-div">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 product-information center">
+                                            <h4>Kod: {{prod.code}}</h4>
+                                            <h5>Nazwa: {{prod.name}}</h5>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="add-product">
+                                                <input class="form-control add-product-input" ng-model="prod.amount" placeholder="Ilość">
+                                                <button type="button" id="" class="btn btn-success" ng-click="addItem(prod)" ng-class="{'disabled' : prod.amount < 1}"><i class="fa fa-check" aria-hidden="true"></i> Dodaj</button>
+                                                <!-- ng-class="{'disabled' : amountOfItem.amount == ''}"  -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-left offer-products" ng-repeat="set in set | filter :{name: searchByInputs.name, code:searchByInputs.code}">
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 search-product">
+                                        <a href="{{set.image}}" data-lightbox="{{set.name}}">
+                                            <img ng-src="{{set.image}}" class="search-img">
+                                        </a>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 product-div">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 product-information center">
+                                            <h4>Kod: {{set.code}}</h4>
+                                            <h5>Nazwa: {{set.name}}</h5>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="add-product">
+                                                <input class="form-control add-product-input" placeholder="Ilość" ng-model="set.amount">
+                                                <button type="button" id="" class="btn btn-success" ng-class="{'disabled' : set.amount < 1}" ng-click="addItem(set)"><i class="fa fa-check" aria-hidden="true"></i> Dodaj</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 40px;">
+                                <div class="col-lg-4 col-md-4 col-sm-2 col-xs-1"></div>
+                                <div class="col-lg-4 col-md-4 col-sm-8 col-xs-10">
+                                    <div class="buttonsCofirms" style="margin-left: auto; margin-right: auto; width: 180px">
+                                        <button type="submit" id="login-submit-button" class="btn btn-danger pull-left" ng-click="back()"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Wróć</button>
+                                        <button type="submit" id="login-submit-button" class="btn btn-primary" ng-click="searchFurther()">Dalej <i class="fa fa-angle-double-right fa-lg" aria-hidden="true"></i></button>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-2 col-xs-1"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div id="collapse2" class="panel-collapse collapse">
-                    <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title center">
-                        <a data-toggle="collapse" data-parent="#accordion" data-target="#collapse3">
-                        Potwierdź</a>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title center" data-toggle="collapse" data-parent="#accordion" data-target="#collapse3">
+                        Potwierdź
                       </h4>
-                </div>
-                <div id="collapse3" class="panel-collapse collapse" aria-expanded="true">
-                    <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-12">
-            <div class="main-section">
-                <h5 class="main-section-h5">Wyszukaj</h5>
-                <div class="row">
-                    <div class="col-lg-5 col-md-5 col-sm-7 col-xs-12">
-                        <label for="example-text-input" class="col-lg-4 col-md-5 col-sm-5 col-form-label input-label">Kod produktu</label>
-                        <div class="col-lg-8 col-md-7 col-sm-7 input-margin">
-                            <input class="form-control offer-inputs" type="text" id="example-text-input">
-                        </div>
-                        <label for="example-text-input" class="col-lg-4 col-md-5 col-sm-5 col-form-label input-label">Numer zestawu</label>
-                        <div class="col-lg-8 col-md-7 col-sm-7 input-margin">
-                            <input class="form-control offer-inputs" type="text" id="example-text-input">
-                        </div>
-                        <label for="example-text-input" class="col-lg-4 col-md-5 col-sm-5 col-form-label input-label">Nazwa</label>
-                        <div class="col-lg-8 col-md-7 col-sm-7 input-margin">
-                            <input class="form-control offer-inputs" type="text" id="example-text-input">
-                        </div>
-                        <label for="example-text-input" class="col-lg-4 col-md-5 col-sm-5 col-form-label input-label">Typ zestawu</label>
-                        <div class="col-lg-8 col-md-7 col-sm-7 input-margin">
-                            <select class="form-control offer-inputs">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                        </div>
-                        <label for="example-text-input" class="col-lg-4 col-md-5 col-sm-5 col-form-label input-label">System</label>
-                        <div class="col-lg-8 col-md-7 col-sm-7 input-margin">
-                            <select class="form-control offer-inputs">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                        </div>
-                        <label for="example-text-input" class="col-lg-4 col-md-5 col-sm-5 col-form-label input-label">Systemodawca</label>
-                        <div class="col-lg-8 col-md-7 col-sm-7 input-margin">
-                            <select class="form-control offer-inputs">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                        </div>
                     </div>
-                    <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
-                        <label for="example-text-input" id="list-of-sets-label" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-form-label input-label">Lista zestawień w ofercie</label>
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <table id="search-dashboard" class="table table-bordered table-hover table-responsive">
-                                <thead>
-                                    <tr>
-                                        <th class="center">Zestawienie</th>
-                                        <th class="center">Akcja</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Mark</td>
-                                        <td class="delete-button">
-                                            <button type="button" class="btn btn-danger" style="">Usuń</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Mark Zadqaa</td>
-                                        <td class="delete-button">
-                                            <button type="button" class="btn btn-danger" style="">Usuń</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Jacob</td>
-                                        <td class="delete-button">
-                                            <button type="button" class="btn btn-danger" style="">Usuń</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>tekst</td>
-                                        <td class="delete-button">
-                                            <button type="button" class="btn btn-danger" style="">Usuń</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row" style="margin-top: 30px; margin-bottom: 30px;">
-        <div class="col-lg-12">
-            <div class="main-section">
-                <h5 class="main-section-h5">Wyszukano 2 produkty</h5>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div id="your-set" class="col-lg-5 col-md-6 col-sm-7 col-xs-12">
-                            <label for="example-text-input" class="col-lg-5 col-md-5 col-sm-5 col-form-label input-label">Twoje zestawienie</label>
-                            <div class="col-lg-7 col-md-7 col-sm-7 input-margin">
-                                <input class="form-control offer-inputs" type="text" id="example-text-input">
-                            </div>
-                        </div>
-                        <!--       <label for="example-text-input" class="col-lg-2 col-md-4 col-sm-3 col-form-label input-label">Twoje zestawienie</label>
-                        <div class="col-lg-4 col-md-6 col-sm-6 input-margin">
-                            <input class="form-control product-inputs" type="text" id="example-text-input">
-                        </div> -->
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <hr id="search-hr">
-                            <label style="margin-top: 10px;">Wyszukano 2 produkty</label>
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px;">
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 search-product">
-                                <span class="product-number">1</span>
-                                <img src="img/kategorie.png" class="search-img">
-                            </div>
-                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 product-div">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 product-information">
-                                    <h4>Kod produktu / Kod zestawu</h4>
-                                    <h5>Nazwa produktu / Nazwa zestawu</h5>
+                    <div id="collapse3" class="panel-collapse collapse" aria-expanded="true">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12 center">
+                                    <button type="submit" class="btn btn-success confirm-buttons" ng-click="saveAndSummarize()">
+                                        <i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i> Zapisz i podsumuj</button>
                                 </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <div class="add-product">
-                                        <input class="form-control add-product-input" type="text" id="example-text-input" placeholder="Ilość">
-                                        <button type="button" id="" class="btn btn-success">Dodaj</button>
-                                    </div>
+                                <div class="col-lg-12 center">
+                                    <button type="submit" class="btn btn-primary confirm-buttons" ng-click="addNewOrder()"><i class="fa fa-folder-open fa-lg" aria-hidden="true"></i> Dodaj kolejne zamówienie
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px;">
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 search-product">
-                                <span class="product-number">2</span>
-                                <img src="img/kategorie.png" class="search-img">
-                            </div>
-                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 product-div">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 product-information">
-                                    <h4>Kod produktu / Kod zestawu</h4>
-                                    <h5>Nazwa produktu / Nazwa zestawu</h5>
-                                </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <div class="add-product">
-                                        <input class="form-control add-product-input" type="text" id="example-text-input" placeholder="Ilość">
-                                        <button type="button" id="" class="btn btn-success">Dodaj</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px;">
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 search-product">
-                                <span class="product-number">3</span>
-                                <img src="img/kategorie.png" class="search-img">
-                            </div>
-                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 product-div">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 product-information">
-                                    <h4>Kod produktu / Kod zestawu</h4>
-                                    <h5>Nazwa produktu / Nazwa zestawu</h5>
-                                </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <div class="add-product">
-                                        <input class="form-control add-product-input" type="text" id="example-text-input" placeholder="Ilość">
-                                        <button type="button" id="" class="btn btn-success">Dodaj</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px;">
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 search-product">
-                                <span class="product-number">4</span>
-                                <img src="img/kategorie.png" class="search-img">
-                            </div>
-                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 product-div">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 product-information">
-                                    <h4>Kod produktu / Kod zestawu</h4>
-                                    <h5>Nazwa produktu / Nazwa zestawu</h5>
-                                </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <div class="add-product">
-                                        <input class="form-control add-product-input" type="text" id="example-text-input" placeholder="Ilość">
-                                        <button type="button" id="" class="btn btn-success">Dodaj</button>
-                                    </div>
+                                <div class="col-lg-12 center">
+                                    <button type="submit" class="btn btn-danger confirm-buttons" ng-click="clearAll()"><i class="fa fa-trash-o fa-lg"></i> Wyczyść wszystko</button>
                                 </div>
                             </div>
                         </div>
@@ -222,5 +190,3 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>

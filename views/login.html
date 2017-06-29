@@ -1,28 +1,32 @@
 <div class="container">
     <div id="upper-navbar" class="navbar">
-        <div class="navbar-header"> <a href="#" class="navbar-brand"><img src="img/logo.gif"></a>
+        <div class="navbar-header">
+            <a href="#" class="navbar-brand"><img src="img/logo.gif"></a>
         </div>
     </div>
     <hr id="menu-hr" class="my-4">
     <div class="row">
-        <div class="col-lg-3 col-md-3 col-sm-2 col-xs-1"></div>
-        <div class="col-lg-6 col-md-6 col-sm-8 col-xs-10">
-            <div class="jumbotron" style="margin-top: 100px;">
+        <div class="col-lg-3 col-md-3 col-sm-2"></div>
+        <div class="col-lg-6 col-md-6 col-sm-8 col-xs-12">
+            <div class="jumbotron" id="login-jumbotron" style="margin-top: 100px;">
                 <h3>Oferty</h3>
                 <hr id="login-hr" class="my-4">
-                <form>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" class="form-control" placeholder="Email">
+                <form id="login-form">
+                    <!-- <label>Email</label> -->
+                    <div class="input-group" style="margin-bottom: 6px;">
+                        <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+                        <input type="email" class="form-control" placeholder="Email" ng-model="userData.auth.email">
                     </div>
-                    <div class="form-group">
-                        <label>Hasło</label>
-                        <input type="password" class="form-control" placeholder="Hasło">
+                    <!-- <label>Hasło</label> -->
+                    <div class="input-group" style="margin-bottom: 20px;">
+                        <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                        <input type="password" class="form-control" placeholder="Hasło" ng-model="userData.auth.password">
                     </div>
-                    <button type="submit" id="login-submit-button" class="btn btn-primary center-block">Wejdź</button>
+                    <button type="submit" id="login-submit-button" class="btn btn-primary center-block" ng-click="login()">Wejdź <i class="fa fa-sign-in fa-lg" style="font-size: 20px;" aria-hidden="true"></i>
+                    </button>
                 </form>
             </div>
         </div>
-        <div class="col-lg-3 col-md-3 col-sm-2 col-xs-1"></div>
+        <div class="col-lg-3 col-md-3 col-sm-2"></div>
     </div>
 </div>

@@ -17,15 +17,15 @@ angular
 
             $scope.getCatalogFromAPI = function() {
                 $scope.catalog = null;
-                // $scope.currentCategories = null;
-
                 ContentSrvc.getCatalog().then(function(data) {
                     $scope.catalog = data.data.catalog;
-                    // $scope.currentCategories = data.data.categories;
-
+                    $scope.currentCategories = data.data.categories;
 
                 }, function(data) {
-                    // Materialize.toast('Wystąpił błąd', 4000);
+                    swal({
+                        title: 'Wystąpił błąd!',
+                        timer: 1200
+                    })
                 });
             };
 
@@ -41,10 +41,6 @@ angular
             $scope.addSystemProvider = function() {
                 ContentSrvc.sendSystemProvider($scope.newSystemProvider).then(function(data) {
                     $scope.getCatalogFromAPI();
-                    // $scope.getNestedCategoriesFromAPI();
-                    // Materialize.toast('Zapisano!', 4000);
-
-
                     swal(
                         'Pomyślnie dodano Systemodawcę!',
                         '',
@@ -54,16 +50,19 @@ angular
                     if (data.status == 403) {
                         $localStorage.user = null;
                         $rootScope.user = null;
-                        // Materialize.toast('Zostałeś wylogowany', 4000);
+                        swal({
+                            title: 'Zostałeś wylogowany!',
+                            timer: 1200
+                        })
 
-                        $state.go('adminLogin');
+                        $state.go('login');
                     } else {
+                        $localStorage.user.auth.token = data.data.auth.token;
                         swal(
-                                'Nie udało się dodać Systemodawcy!',
-                                '',
-                                'error'
-                            )
-                            // $scope.getCategoriesFromAPI();
+                            'Nie udało się dodać Systemodawcy!',
+                            '',
+                            'error'
+                        )
                     }
                 });
             }
@@ -78,10 +77,6 @@ angular
             $scope.addSystem = function() {
                 ContentSrvc.sendSystem($scope.newSystem).then(function(data) {
                     $scope.getCatalogFromAPI();
-                    // $scope.getNestedCategoriesFromAPI();
-                    // Materialize.toast('Zapisano!', 4000);
-
-
                     swal(
                         'Pomyślnie dodano System!',
                         '',
@@ -91,19 +86,23 @@ angular
                     if (data.status == 403) {
                         $localStorage.user = null;
                         $rootScope.user = null;
-                        // Materialize.toast('Zostałeś wylogowany', 4000);
+                        swal({
+                            title: 'Zostałeś wylogowany!',
+                            timer: 1200
+                        })
 
-                        $state.go('adminLogin');
+                        $state.go('login');
                     } else {
+                        $localStorage.user.auth.token = data.data.auth.token;
                         swal(
-                                'Nie udało się dodać System!',
-                                '',
-                                'error'
-                            )
-                            // $scope.getCategoriesFromAPI();
+                            'Nie udało się dodać Systemu!',
+                            '',
+                            'error'
+                        )
                     }
                 });
             }
+
 
 
             $scope.saveChanges = function() {
@@ -115,24 +114,116 @@ angular
                             return true;
                         }
                     }
-                    $scope.addSystemProvider();
-
                 }
+                $scope.addSystemProvider();
+            }
 
-                // for (var i = 0; i < $localStorage.catalog.length; i++) {
-                //     alert($localStorage.catalog[i].name);
-                //     if ($localStorage.catalog[i].name == $scope.newSystemProvider.system_provider.name) {
-                //         $scope.newSystem.system.id_parent = $localStorage.catalog[i].id;
-                //         $scope.addSystem();
-                //         alert('Poprawnie');
-                //         return true;
-                //     }
-                // }
-                // alert($scope.newSystemProvider.system_provider.name);
-                // $scope.addSystemProvider();
+            $scope.correctSystemProvider = function(data) {
+                if ($scope.newSystemProvider.system_provider.name == data) {
+                    return true;
+                } else if ($scope.newSystemProvider.system_provider.name == '') {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            $scope.deleteSystemProvider = function(id) {
+                swal({
+                    title: 'Czy jesteś pewny?',
+                    text: "",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Usuń!',
+                    cancelButtonText: 'Anuluj!'
+                }).then(function() {
+                    $scope.systemProviderId = {
+                        id: id
+                    }
+
+                    ContentSrvc.deleteSystemProvider($scope.systemProviderId).then(function(data) {
+                        $scope.getCatalogFromAPI();
+                        swal(
+                            'Usunięto!',
+                            '',
+                            'success'
+                        )
+
+                    }, function(data) {
+                        if (data.status == 403) {
+                            $localStorage.user = null;
+                            $rootScope.user = null;
+                            swal({
+                                title: 'Zostałeś wylogowany!',
+                                timer: 1200
+                            })
+
+                            $state.go('login');
+                        } else {
+                            $localStorage.user.auth.token = data.data.auth.token;
+                            swal(
+                                'Nie udało się usunąć Systemodawcy!',
+                                '',
+                                'error'
+                            )
+                        }
+                    });
+
+                })
+
+            }
+
+            $scope.deleteSystem = function(id) {
+                swal({
+                    title: 'Czy jesteś pewny?',
+                    text: "",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Usuń!',
+                    cancelButtonText: 'Anuluj!'
+                }).then(function() {
+                    $scope.systemId = {
+                        id: id
+                    }
+
+                    ContentSrvc.deleteSystem($scope.systemId).then(function(data) {
+                        $scope.getCatalogFromAPI();
+                        swal(
+                            'Usunięto!',
+                            '',
+                            'success'
+                        )
+
+                    }, function(data) {
+                        if (data.status == 403) {
+                            $localStorage.user = null;
+                            $rootScope.user = null;
+                            swal({
+                                title: 'Zostałeś wylogowany!',
+                                timer: 1200
+                            })
+
+                            $state.go('login');
+                        } else {
+                            $localStorage.user.auth.token = data.data.auth.token;
+                            swal(
+                                'Nie udało się usunąć Systemu!',
+                                '',
+                                'error'
+                            )
+                        }
+                    });
+
+                })
+
             }
         }
+
+
+
+
     ]);
-
-
-
