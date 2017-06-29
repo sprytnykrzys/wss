@@ -36,7 +36,7 @@
                     <optgroup ng-repeat="(key, value) in catalog[1].subhierarchyElements" label="{{value.name}}">
                         <option ng-repeat="(system, name) in catalog[1].subhierarchyElements[key].subhierarchyElements" ng-value="{{name.id}}">{{name.name}}</option>
                     </optgroup>
-                </select>
+                </select>  
             </div>
             <label class="col-lg-4 col-md-5 col-sm-5 col-form-label input-label">Obrazek</label>
             <div class="col-lg-8 col-md-7 col-sm-7 input-margin">
