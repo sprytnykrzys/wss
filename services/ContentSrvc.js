@@ -15,7 +15,7 @@ angular.module('Wss.Services.ContentSrvc', [
 
 
         this.getUsers = function() {
-
+            $rootScope.showPreloader();
             var req = {
                 method: 'GET',
                 url: $rootScope.endpointURL + '/user',
@@ -28,14 +28,14 @@ angular.module('Wss.Services.ContentSrvc', [
 
             promise.then(function(data) {
                 $localStorage.users = data.data.users;
-
+                $rootScope.hidePreloader();
             });
 
             return promise;
         };
 
         this.getClients = function() {
-
+            $rootScope.showPreloader();
             var req = {
                 method: 'GET',
                 url: $rootScope.endpointURL + '/client?uid=' + $localStorage.user.auth.uid + '&token=' + $localStorage.user.auth.token,
@@ -50,14 +50,14 @@ angular.module('Wss.Services.ContentSrvc', [
                 $localStorage.clients = data.data.clients;
                 $localStorage.generalStats = data.data.general_stats;
                 $localStorage.user.auth.token = data.data.auth.token;
-
+                $rootScope.hidePreloader();
             });
 
             return promise;
         };
 
         this.getLastUsers = function() {
-
+            $rootScope.showPreloader();
             var req = {
                 method: 'GET',
                 url: $rootScope.endpointURL + '/user?recently_logged=1',
@@ -70,7 +70,7 @@ angular.module('Wss.Services.ContentSrvc', [
 
             promise.then(function(data) {
                 $localStorage.lastUsers = data.data.users;
-
+                $rootScope.hidePreloader();
 
             });
 
@@ -78,7 +78,7 @@ angular.module('Wss.Services.ContentSrvc', [
         };
 
         this.getProducts = function() {
-
+            $rootScope.showPreloader();
             var req = {
                 method: 'GET',
                 url: $rootScope.endpointURL + '/product',
@@ -91,14 +91,14 @@ angular.module('Wss.Services.ContentSrvc', [
 
             promise.then(function(data) {
                 $localStorage.products = data.data.products;
-
+                $rootScope.hidePreloader();
             });
 
             return promise;
         };
 
         this.getCatalog = function() {
-
+            $rootScope.showPreloader();
             var req = {
                 method: 'GET',
                 url: $rootScope.endpointURL + '/catalog',
@@ -111,7 +111,7 @@ angular.module('Wss.Services.ContentSrvc', [
 
             promise.then(function(data) {
                 $localStorage.catalog = data.data.catalog;
-
+                $rootScope.hidePreloader();
             });
 
             return promise;
@@ -119,7 +119,7 @@ angular.module('Wss.Services.ContentSrvc', [
 
 
         this.getSet = function() {
-
+            $rootScope.showPreloader();
             var req = {
                 method: 'GET',
                 url: $rootScope.endpointURL + '/products_set',
@@ -132,14 +132,14 @@ angular.module('Wss.Services.ContentSrvc', [
 
             promise.then(function(data) {
                 $localStorage.set = data.data.products_sets;
-
+                $rootScope.hidePreloader();
             });
 
             return promise;
         };
 
         this.sendSystemProvider = function(data) {
-
+            $rootScope.showPreloader();
             var data = {
                 "auth": {
                     "uid": $localStorage.user.auth.uid,
@@ -161,13 +161,14 @@ angular.module('Wss.Services.ContentSrvc', [
 
             promise.then(function(data) {
                 $localStorage.user.auth.token = data.data.auth.token;
+                $rootScope.hidePreloader();
             });
 
             return promise;
         };
 
         this.sendSystem = function(data) {
-
+            $rootScope.showPreloader();
             var data = {
                 "auth": {
                     "uid": $localStorage.user.auth.uid,
@@ -190,6 +191,7 @@ angular.module('Wss.Services.ContentSrvc', [
 
             promise.then(function(data) {
                 $localStorage.user.auth.token = data.data.auth.token;
+                $rootScope.hidePreloader();
             });
 
             return promise;
@@ -197,7 +199,7 @@ angular.module('Wss.Services.ContentSrvc', [
 
 
         this.sendClient = function(data) {
-
+            $rootScope.showPreloader();
             var data = {
                 "auth": {
                     "uid": $localStorage.user.auth.uid,
@@ -219,6 +221,7 @@ angular.module('Wss.Services.ContentSrvc', [
 
             promise.then(function(data) {
                 $localStorage.user.auth.token = data.data.auth.token;
+                $rootScope.hidePreloader();
             });
 
             return promise;
@@ -226,7 +229,7 @@ angular.module('Wss.Services.ContentSrvc', [
 
 
         this.sendUser = function(data) {
-
+            $rootScope.showPreloader();
             var data = {
                 "auth": {
                     "uid": $localStorage.user.auth.uid,
@@ -248,6 +251,7 @@ angular.module('Wss.Services.ContentSrvc', [
 
             promise.then(function(data) {
                 $localStorage.user.auth.token = data.data.auth.token;
+                $rootScope.hidePreloader();
             });
 
             return promise;
@@ -255,7 +259,7 @@ angular.module('Wss.Services.ContentSrvc', [
 
 
         this.sendProduct = function(data) {
-
+            $rootScope.showPreloader();
             var data = {
                 "auth": {
                     "uid": $localStorage.user.auth.uid,
@@ -277,13 +281,14 @@ angular.module('Wss.Services.ContentSrvc', [
 
             promise.then(function(data) {
                 $localStorage.user.auth.token = data.data.auth.token;
+                $rootScope.hidePreloader();
             });
 
             return promise;
         };
 
         this.sendSet = function(data) {
-
+            $rootScope.showPreloader();
             var data = {
                 "auth": {
                     "uid": $localStorage.user.auth.uid,
@@ -305,6 +310,35 @@ angular.module('Wss.Services.ContentSrvc', [
 
             promise.then(function(data) {
                 $localStorage.user.auth.token = data.data.auth.token;
+                $rootScope.hidePreloader();
+            });
+
+            return promise;
+        };
+
+         this.sendProductToSet = function(id_set, id_product, quantity) {
+            $rootScope.showPreloader();
+            var data = {
+                "auth": {
+                    "uid": $localStorage.user.auth.uid,
+                    "token": $localStorage.user.auth.token
+                },
+            };
+
+            var req = {
+                method: 'POST',
+                url: $rootScope.endpointURL + '/products_set/' + id_set + '/product/' + id_product + '/' + quantity + '/',
+                data: data,
+                headers: {
+                    "Content-Type": "text/plain"
+                }
+            };
+
+            var promise = $http(req);
+
+            promise.then(function(data) {
+                $localStorage.user.auth.token = data.data.auth.token;
+                $rootScope.hidePreloader();
             });
 
             return promise;
@@ -312,7 +346,7 @@ angular.module('Wss.Services.ContentSrvc', [
 
 
         this.deleteClient = function(data) {
-
+            $rootScope.showPreloader();
             var data = {
                 "auth": {
                     "uid": $localStorage.user.auth.uid,
@@ -335,6 +369,7 @@ angular.module('Wss.Services.ContentSrvc', [
 
             promise.then(function(data) {
                 $localStorage.user.auth.token = data.data.auth.token;
+                $rootScope.hidePreloader();
 
             });
 
@@ -342,7 +377,7 @@ angular.module('Wss.Services.ContentSrvc', [
         };
 
         this.deleteUser = function(params) {
-
+            $rootScope.showPreloader();
             var data = {
                 "auth": {
                     "uid": $localStorage.user.auth.uid,
@@ -364,14 +399,14 @@ angular.module('Wss.Services.ContentSrvc', [
 
             promise.then(function(data) {
                 $localStorage.user.auth.token = data.data.auth.token;
-
+                $rootScope.hidePreloader();
             });
 
             return promise;
         };
 
         this.deleteProduct = function(data, prod) {
-
+            $rootScope.showPreloader();
             var data = {
                 "auth": {
                     "uid": $localStorage.user.auth.uid,
@@ -393,14 +428,14 @@ angular.module('Wss.Services.ContentSrvc', [
 
             promise.then(function(data) {
                 $localStorage.user.auth.token = data.data.auth.token;
-
+                $rootScope.hidePreloader();
             });
 
             return promise;
         };
 
         this.deleteSet = function(params) {
-
+            $rootScope.showPreloader();
             var data = {
                 "auth": {
                     "uid": $localStorage.user.auth.uid,
@@ -423,13 +458,14 @@ angular.module('Wss.Services.ContentSrvc', [
             promise.then(function(data) {
                 $localStorage.set = data.data.products_sets;
                 $localStorage.user.auth.token = data.data.auth.token;
+                $rootScope.hidePreloader();
             });
 
             return promise;
         };
 
         this.deleteSystemProvider = function(params) {
-
+            $rootScope.showPreloader();
             var data = {
                 "auth": {
                     "uid": $localStorage.user.auth.uid,
@@ -451,14 +487,14 @@ angular.module('Wss.Services.ContentSrvc', [
             promise.then(function(data) {
                 $localStorage.catalog = data.data.catalog;
                 $localStorage.user.auth.token = data.data.auth.token;
-
+                $rootScope.hidePreloader();
             });
 
             return promise;
         };
 
         this.deleteSystem = function(params) {
-
+            $rootScope.showPreloader();
             var data = {
                 "auth": {
                     "uid": $localStorage.user.auth.uid,
@@ -481,6 +517,7 @@ angular.module('Wss.Services.ContentSrvc', [
             promise.then(function(data) {
                 $localStorage.catalog = data.data.catalog;
                 $localStorage.user.auth.token = data.data.auth.token;
+                $rootScope.hidePreloader();
 
             });
 
@@ -488,7 +525,7 @@ angular.module('Wss.Services.ContentSrvc', [
         };
 
         this.deleteProductFromSet = function(data) {
-
+            $rootScope.showPreloader();
             var data = {
                 "auth": {
                     "uid": $localStorage.user.auth.uid,
@@ -512,6 +549,7 @@ angular.module('Wss.Services.ContentSrvc', [
             promise.then(function(data) {
                 $localStorage.catalog = data.data.catalog;
                 $localStorage.user.auth.token = data.data.auth.token;
+                $rootScope.hidePreloader();
 
             });
 
@@ -520,12 +558,13 @@ angular.module('Wss.Services.ContentSrvc', [
 
 
         this.updateClient = function(data, clientId) {
+            $rootScope.showPreloader();
             var data = {
                 "auth": {
                     "uid": $localStorage.user.auth.uid,
                     "token": $localStorage.user.auth.token
                 },
-                "client": data.newClient
+                "client": data.client
             };
 
             var req = {
@@ -541,6 +580,7 @@ angular.module('Wss.Services.ContentSrvc', [
 
             promise.then(function(data) {
                 $localStorage.user.auth.token = data.data.auth.token;
+                $rootScope.hidePreloader();
 
             });
 
@@ -548,7 +588,7 @@ angular.module('Wss.Services.ContentSrvc', [
         };
 
         this.updateProduct = function(data) {
-
+            $rootScope.showPreloader();
             var data = {
                 "auth": {
                     "uid": $localStorage.user.auth.uid,
@@ -570,13 +610,14 @@ angular.module('Wss.Services.ContentSrvc', [
 
             promise.then(function(data) {
                 $localStorage.user.auth.token = data.data.auth.token;
+                $rootScope.hidePreloader();
             });
 
             return promise;
         };
 
         this.updateSet = function(data, id) {
-
+            $rootScope.showPreloader();
             var data = {
                 "auth": {
                     "uid": $localStorage.user.auth.uid,
@@ -598,13 +639,14 @@ angular.module('Wss.Services.ContentSrvc', [
 
             promise.then(function(data) {
                 $localStorage.user.auth.token = data.data.auth.token;
+                $rootScope.hidePreloader();
             });
 
             return promise;
         };
 
         this.generateOffer = function() {
-
+            $rootScope.showPreloader();
             var data = {
                 "auth": {
                     "uid": $localStorage.user.auth.uid,
@@ -625,6 +667,7 @@ angular.module('Wss.Services.ContentSrvc', [
 
             promise.then(function(data) {
                 $localStorage.user.auth.token = data.data.auth.token;
+                $rootScope.hidePreloader();
             });
 
             return promise;

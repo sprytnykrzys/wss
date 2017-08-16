@@ -87,7 +87,8 @@ angular
             $scope.newClient = {
                 client: {
                     name: "",
-                    discount: ""
+                    discount: "",
+                    discount_currency: ""
                 }
             };
 
@@ -112,12 +113,11 @@ angular
                     if (data.status == 403) {
                         $localStorage.user = null;
                         $rootScope.user = null;
+                        $state.go('login');
                         swal({
                             title: 'Zostałeś wylogowany!',
                             timer: 1200
                         })
-
-                        $state.go('login');
                     } else {
                         $localStorage.user.auth.token = data.data.auth.token;
                         swal(
@@ -130,8 +130,10 @@ angular
             }
 
             $scope.updateClient = function() {
+                console.log($scope.newClient);
                 ContentSrvc.updateClient($scope.newClient, $scope.currentIdClient).then(function(data) {
                     $scope.getClientsFromAPI();
+                    $scope.getUsersFromAPI();
                     swal(
                         'Pomyślnie zaktualizowao!',
                         '',
@@ -141,12 +143,11 @@ angular
                     if (data.status == 403) {
                         $localStorage.user = null;
                         $rootScope.user = null;
+                        $state.go('login');
                         swal({
                             title: 'Zostałeś wylogowany!',
                             timer: 1200
                         })
-
-                        $state.go('login');
                     } else {
                         $localStorage.user.auth.token = data.data.auth.token;
                         swal(
@@ -180,12 +181,11 @@ angular
                     if (data.status == 403) {
                         $localStorage.user = null;
                         $rootScope.user = null;
+                        $state.go('login');
                         swal({
                             title: 'Zostałeś wylogowany!',
                             timer: 1200
                         })
-
-                        $state.go('login');
                     } else {
                         $localStorage.user.auth.token = data.data.auth.token;
                         swal(
@@ -225,12 +225,11 @@ angular
                         if (data.status == 403) {
                             $localStorage.user = null;
                             $rootScope.user = null;
+                            $state.go('login');
                             swal({
                                 title: 'Zostałeś wylogowany!',
                                 timer: 1200
                             })
-
-                            $state.go('login');
                         } else {
                             $localStorage.user.auth.token = data.data.auth.token;
                             swal(
@@ -272,12 +271,11 @@ angular
                         if (data.status == 403) {
                             $localStorage.user = null;
                             $rootScope.user = null;
+                            $state.go('login');
                             swal({
                                 title: 'Zostałeś wylogowany!',
                                 timer: 1200
                             })
-
-                            $state.go('login');
                         } else {
                             $localStorage.user.auth.token = data.data.auth.token;
                             swal(

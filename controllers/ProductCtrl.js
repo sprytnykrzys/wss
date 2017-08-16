@@ -102,7 +102,7 @@ angular
             }
 
             $scope.sendProductService = function(data) {
-                if($scope.newProduct.product.id_system == ""){
+                if ($scope.newProduct.product.id_system == "") {
                     $scope.newProduct.product.id_system = null;
                 }
                 ContentSrvc.sendProduct(data).then(function(data) {
@@ -116,6 +116,7 @@ angular
                     if (data.status == 403) {
                         $localStorage.user = null;
                         $rootScope.user = null;
+                        $state.go('login');
                         swal({
                             title: 'Zostałeś wylogowany!',
                             timer: 1200
@@ -144,6 +145,7 @@ angular
                     if (data.status == 403) {
                         $localStorage.user = null;
                         $rootScope.user = null;
+                        $state.go('login');
                         swal({
                             title: 'Zostałeś wylogowany!',
                             timer: 1200
@@ -151,10 +153,10 @@ angular
                     } else {
                         $localStorage.user.auth.token = data.data.auth.token;
                         swal(
-                                'Nie udało się zaktualizować produktu!',
-                                '',
-                                'error'
-                            )
+                            'Nie udało się zaktualizować produktu!',
+                            '',
+                            'error'
+                        )
                     }
                 });
             }
@@ -191,6 +193,7 @@ angular
                         if (data.status == 403) {
                             $localStorage.user = null;
                             $rootScope.user = null;
+                            $state.go('login');
                             swal({
                                 title: 'Zostałeś wylogowany!',
                                 timer: 1200
@@ -211,16 +214,17 @@ angular
             $scope.editProduct = function(prod) {
                 $scope.currentIdProduct = prod.id;
                 $scope.newProduct = {
-                    product: {
-                        name: prod.name,
-                        code: prod.code,
-                        export_code: prod.export_code,
-                        price: prod.price,
-                        currency: prod.currency,
-                        measure_unit: prod.measure_unit,
-                        id_system: prod.id_system
+                        product: {
+                            name: prod.name,
+                            code: prod.code,
+                            export_code: prod.export_code,
+                            price: prod.price,
+                            currency: prod.currency,
+                            measure_unit: prod.measure_unit,
+                            id_system: prod.id_system
+                        }
                     }
-                }
+                    
             }
 
             $scope.clearInputs = function() {
@@ -236,6 +240,17 @@ angular
                         id_system: ""
                     }
                 }
+            }
+
+            $scope.getName = function(idSystem) {
+                for (var key in $localStorage.catalog[1].subhierarchyElements) {
+                    for (var system in $localStorage.catalog[1].subhierarchyElements[key].subhierarchyElements) {
+                        if ($localStorage.catalog[1].subhierarchyElements[key].subhierarchyElements[system].id == idSystem) {
+                            return $localStorage.catalog[1].subhierarchyElements[key].subhierarchyElements[system].name;
+                        }
+                    }
+                }
+                return 'Brak';
             }
 
             File.prototype.convertToBase64 = function(callback) {

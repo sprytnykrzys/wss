@@ -58,6 +58,7 @@ angular
             $scope.newSet = {
                 products_set: {
                     code: "",
+                    export_code: "",
                     type: "",
                     name: "",
                     id_system: "",
@@ -66,15 +67,16 @@ angular
             }
 
             $scope.productCode = ""; // Kod produktu który chcemy dodać do zestawu
+            $scope.quantity = ""; // Ilość produktu który chcemy dodać do zestawu
             $scope.addedProducts = []; // Produkty do wyświetlenia w lewej tabeli
 
             $scope.correctProductCode = function() {
                 for (var i = 0; i < $localStorage.products.length; i++) {
                     if ($localStorage.products[i].code == $scope.productCode) {
-                        $scope.currentProduct = $localStorage.products[i]; // Aktualnie wyszukany produkt
+                        $scope.currentProductId = $localStorage.products[i].id; // Id aktualnie wyszukanego produktu
                         return false;
                     } else {
-                        $scope.currentProduct = null;
+                        $scope.currentProductId = null;
                     }
                 }
                 return true;
@@ -93,22 +95,66 @@ angular
                 }
             }
 
+            $scope.setId = {
+                uid: ""
+            }
+
             $scope.addProduct = function() {
                 $scope.setCodeWithNewAddedProducts = $scope.newSet.products_set.code; // Zapisuje kod aktualnie dodanego produktu
-                $scope.addedProducts.push($scope.currentProduct);
-                $scope.newSet.products_set.products.push($scope.currentProduct.id);
-                swal(
-                    'Pomyślnie dodano produkt do zestawu!',
-                    '',
-                    'success'
-                )
+                // $scope.addedProducts.push($scope.currentProduct);
+                // $scope.newSet.products_set.products.push($scope.currentProduct.id);
+                // swal(
+                //     'Pomyślnie dodano produkt do zestawu!',
+                //     '',
+                //     'success'
+                // )
+                for (var i = 0; i < $localStorage.set.length; i++) {
+                    if ($localStorage.set[i].code == $scope.newSet.products_set.code) {
+                        $scope.setId = {
+                            uid: $localStorage.set[i].id
+                        }
+                    }
+                }
+                ContentSrvc.sendProductToSet($scope.setId.uid, $scope.currentProductId, $scope.quantity).then(function(data) {
+                    $scope.getSetFromAPI();
+                    // $scope.addedProducts = [];
+                    // $scope.newSet.products_set.products = [];
+                    swal(
+                        'Pomyślnie dodano zestaw!',
+                        '',
+                        'success'
+                    )
+
+                }, function(data) {
+                    if (data.status == 403) {
+                        $localStorage.user = null;
+                        $rootScope.user = null;
+                        $state.go('login');
+                        swal({
+                            title: 'Zostałeś wylogowany!',
+                            timer: 1200
+                        })
+                    } else {
+                        $localStorage.user.auth.token = data.data.auth.token;
+                        swal(
+                            'Nie udało się dodać zestawu!',
+                            '',
+                            'error'
+                        )
+                    }
+                });
             }
 
             $scope.editSet = function(set) {
-                $scope.newSet.products_set.code = set.code;
-                $scope.newSet.products_set.type = set.type;
-                $scope.newSet.products_set.name = set.name;
-                $scope.newSet.products_set.id_system = set.id_system;
+                $scope.newSet = {
+                    products_set: {
+                        code: set.code,
+                        export_code: set.export_code,
+                        type: set.type,
+                        name: set.name,
+                        id_system: set.id_system
+                    }
+                }
                 $scope.setId = {
                     uid: set.id
                 }
@@ -167,6 +213,9 @@ angular
 
 
             $scope.sendSetService = function(data) {
+                if ($scope.newSet.products_set.id_system == "") {
+                    $scope.newSet.products_set.id_system = null;
+                }
                 ContentSrvc.sendSet(data).then(function(data) {
                     $scope.getSetFromAPI();
                     $scope.addedProducts = [];
@@ -181,12 +230,11 @@ angular
                     if (data.status == 403) {
                         $localStorage.user = null;
                         $rootScope.user = null;
+                        $state.go('login');
                         swal({
                             title: 'Zostałeś wylogowany!',
                             timer: 1200
                         })
-
-                        $state.go('login');
                     } else {
                         $localStorage.user.auth.token = data.data.auth.token;
                         swal(
@@ -211,12 +259,11 @@ angular
                     if (data.status == 403) {
                         $localStorage.user = null;
                         $rootScope.user = null;
+                        $state.go('login');
                         swal({
                             title: 'Zostałeś wylogowany!',
                             timer: 1200
                         })
-
-                        $state.go('login');
                     } else {
                         $localStorage.user.auth.token = data.data.auth.token;
                         swal(
@@ -254,12 +301,11 @@ angular
                         if (data.status == 403) {
                             $localStorage.user = null;
                             $rootScope.user = null;
+                            $state.go('login');
                             swal({
                                 title: 'Zostałeś wylogowany!',
                                 timer: 1200
                             })
-
-                            $state.go('login');
                         } else {
                             $localStorage.user.auth.token = data.data.auth.token;
                             swal(
@@ -292,6 +338,7 @@ angular
                     }
                     ContentSrvc.deleteProductFromSet($scope.toDelete).then(function(data) {
                         $scope.getSetFromAPI();
+                        $scope.getCatalogFromAPI();
                         swal(
                             'Usunięto!',
                             '',
@@ -303,12 +350,11 @@ angular
                         if (data.status == 403) {
                             $localStorage.user = null;
                             $rootScope.user = null;
+                            $state.go('login');
                             swal({
                                 title: 'Zostałeś wylogowany!',
                                 timer: 1200
                             })
-
-                            $state.go('login');
                         } else {
                             $localStorage.user.auth.token = data.data.auth.token;
                             swal(
@@ -345,6 +391,17 @@ angular
 
 
                 })
+            }
+
+            $scope.getName = function(idSystem) {
+                for (var key in $localStorage.catalog[1].subhierarchyElements) {
+                    for (var system in $localStorage.catalog[1].subhierarchyElements[key].subhierarchyElements) {
+                        if ($localStorage.catalog[1].subhierarchyElements[key].subhierarchyElements[system].id == idSystem) {
+                            return $localStorage.catalog[1].subhierarchyElements[key].subhierarchyElements[system].name;
+                        }
+                    }
+                }
+                return 'Brak';
             }
 
             File.prototype.convertToBase64 = function(callback) {

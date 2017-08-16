@@ -6,21 +6,22 @@
         </div>
     </div>
     <div class="row center" ng-if="currentOrders.length > 0" style="margin-bottom: 20px;">
-        <button type="submit" id="print-button" class="btn btn-primary" ng-click="printOrder()"><i class="fa fa-print fa-lg" aria-hidden="true"></i>
- Drukuj</button>
+        <button type="submit" id="print-button" class="btn btn-primary" ng-click="printOrder()"><i class="fa fa-print fa-lg" aria-hidden="true"></i> Drukuj
+        </button>
         <label>Dane użytkownika:</label>
         <p>Email: {{userData.auth.email}}</p>
-       
     </div>
     <div class="row">
-         <p class="text-left" id="order-text">Podane ceny nie zawierają podatku VAT i mogą ulec zmianie bez uprzedzenia w zależności od zmian cen wprowadzonych przez producenta, kursu euro, jak również zmian w podatkach i przepisach celnych. Przedstawione informacje są aktualne w chwili ukazania się niniejszej publikacji. WSS zastrzega sobie prawo do zmian w ofercie w każdej chwili i to zarówno w zakresie oferowanych produktów jak i ich specyfikacji. Niniejszy cennik nie stanowi oferty w rozumieniu prawa i publikowany jest jedynie do celów informacyjnych bez żadnej odpowiedzialności.</p>
+        <p class="text-left" id="order-text">Podane ceny nie zawierają podatku VAT i mogą ulec zmianie bez uprzedzenia w zależności od zmian cen wprowadzonych przez producenta, kursu euro, jak również zmian w podatkach i przepisach celnych. Przedstawione informacje są aktualne w chwili ukazania się niniejszej publikacji. WSS zastrzega sobie prawo do zmian w ofercie w każdej chwili i to zarówno w zakresie oferowanych produktów jak i ich specyfikacji. Niniejszy cennik nie stanowi oferty w rozumieniu prawa i publikowany jest jedynie do celów informacyjnych bez żadnej odpowiedzialności.</p>
+        <p class="text-center" style="margin-bottom: 40px;">
+            <label id="order-sum">Suma zamówienia:</label> <strike>{{normalSum()| number : 2}} EUR</strike> <b>{{discountSum() | number : 2}} EUR</b></p>
     </div>
     <div class="row" ng-repeat="order in currentOrders" style="margin-bottom: 30px;">
         <div class="col-lg-12">
             <div class="main-section">
                 <h5 class="main-section-h5">{{order.name}}</h5>
                 <div class="row center">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center" ng-repeat="set in order.products" ng-if="set.type == 'Zestaw' || set.type == 'Zestaw-Paniczny'">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center" ng-init="setAmountOfSetProducts($index, set)" ng-repeat="set in order.products" ng-if="set.type == 'Zestaw' || set.type == 'Zestaw-Paniczny'">
                         <label style="margin-top: 10px;">Zestaw "{{set.name}}"</label>
                         <table class="table table-bordered table-hover">
                             <tbody>
@@ -33,6 +34,7 @@
                                     </td>
                                     <td class="mobile-order-td">Kod: {{set.code}}</td>
                                     <td class="mobile-order-td">Ilość: {{set.amount}}</td>
+                                    <td class="mobile-order-td"><strike> {{normalPrice(set.amount, set.set_price) | number : 2}} {{set.set_price_currency}}</strike> <b> {{discountPrice(set.set_price, set.amount) | number : 2}} {{set.set_price_currency}}</b></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -45,7 +47,14 @@
                                         </a>
                                         {{prod.name}}
                                     </td class="mobile-order-td">
-                                    <td class="mobile-order-td">Kod: {{prod.code}}</td>
+                                    <td class="mobile-order-td">Kod
+                                        <br> {{prod.code}}</td>
+                                    <td class="mobile-order-td">Cena jednostkowa
+                                        <br> <strike>{{prod.price}}</strike> <b> {{discountPrice(prod.price) | number : 2}}</b> <b>{{prod.currency}}</b></td>
+                                    <td class="mobile-order-td">Ilość
+                                        <br> {{prod.quantity_by_set}}</td>
+                                    <td class="mobile-order-td"><strike> {{normalPrice(prod.quantity_by_set, prod.price) | number : 2}}</strike>
+                                        <br> <b>{{discountPrice(prod.price, prod.quantity_by_set) | number : 2}} <b>{{prod.currency}}</b></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -63,8 +72,14 @@
                                         </a>
                                         {{prod.name}}
                                     </td>
-                                    <td class="mobile-order-td">Kod: {{prod.code}}</td>
-                                    <td class="mobile-order-td">Ilość: {{prod.amount}}</td>
+                                    <td class="mobile-order-td">Kod
+                                        <br> {{prod.code}}</td>
+                                    <td class="mobile-order-td">Cena jednostkowa
+                                        <br> <strike>{{prod.price}}</strike> <b> {{discountPrice(prod.price) | number : 2}}</b> <b>{{prod.currency}}</b></td>
+                                    <td class="mobile-order-td">Ilość
+                                        <br> {{prod.amount}}</td>
+                                    <td class="mobile-order-td"><strike> {{normalPrice(prod.amount, prod.price) | number : 2}}</strike>
+                                        <br> <b>{{discountPrice(prod.price, prod.amount) | number : 2}} {{prod.currency}}</b></td>
                                 </tr>
                             </tbody>
                         </table>

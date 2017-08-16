@@ -50,12 +50,11 @@ angular
                     if (data.status == 403) {
                         $localStorage.user = null;
                         $rootScope.user = null;
+                        $state.go('login');
                         swal({
                             title: 'Zostałeś wylogowany!',
                             timer: 1200
                         })
-
-                        $state.go('login');
                     } else {
                         $localStorage.user.auth.token = data.data.auth.token;
                         swal(
@@ -86,12 +85,11 @@ angular
                     if (data.status == 403) {
                         $localStorage.user = null;
                         $rootScope.user = null;
+                        $state.go('login');
                         swal({
                             title: 'Zostałeś wylogowany!',
                             timer: 1200
                         })
-
-                        $state.go('login');
                     } else {
                         $localStorage.user.auth.token = data.data.auth.token;
                         swal(
@@ -155,12 +153,11 @@ angular
                         if (data.status == 403) {
                             $localStorage.user = null;
                             $rootScope.user = null;
+                            $state.go('login');
                             swal({
                                 title: 'Zostałeś wylogowany!',
                                 timer: 1200
                             })
-
-                            $state.go('login');
                         } else {
                             $localStorage.user.auth.token = data.data.auth.token;
                             swal(
@@ -202,12 +199,11 @@ angular
                         if (data.status == 403) {
                             $localStorage.user = null;
                             $rootScope.user = null;
+                            $state.go('login');
                             swal({
                                 title: 'Zostałeś wylogowany!',
                                 timer: 1200
                             })
-
-                            $state.go('login');
                         } else {
                             $localStorage.user.auth.token = data.data.auth.token;
                             swal(

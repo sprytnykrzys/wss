@@ -60,6 +60,21 @@ angular
                 });
             };
 
+            $scope.getUsersFromAPI = function() {
+                $scope.users = null;
+
+                ContentSrvc.getUsers().then(function(data) {
+                    $scope.users = data.data.users;
+
+                }, function(data) {
+                    swal({
+                        title: 'Wystąpił błąd!',
+                        timer: 1200
+                    })
+                });
+            };
+
+            $scope.getUsersFromAPI();
             $scope.getSetFromAPI();
             $scope.getProductsFromAPI();
             $scope.getCatalogFromAPI();
@@ -126,6 +141,7 @@ angular
                         }
                         $scope.prodToAdd = item;
                         $scope.newOrder.products.push($scope.prodToAdd);
+
                         swal(
                             'Dadano produkt!',
                             '',
@@ -134,6 +150,7 @@ angular
                     } else {
                         $scope.prodToAdd = item;
                         $scope.newOrder.products.push($scope.prodToAdd);
+
                         swal(
                             'Dadano produkt!',
                             '',
@@ -174,6 +191,8 @@ angular
 
             $scope.saveAndSummarize = function() {
                 if ($scope.newOrder.name && $scope.newOrder.products.length > 0) {
+                    $scope.newOrder.normalPrice = $scope.nPrice;
+                    $scope.newOrder.discountPrice = $scope.nPrice * $scope.discount;
                     $localStorage.orders.push($scope.newOrder);
                 } else if ($scope.newOrder.name == '') {
                     swal(
@@ -211,12 +230,11 @@ angular
                     if (data.status == 403) {
                         $localStorage.user = null;
                         $rootScope.user = null;
+                        $state.go('login');
                         swal({
                             title: 'Zostałeś wylogowany!',
                             timer: 1200
                         })
-
-                        $state.go('login');
                     } else {
                         $localStorage.user.auth.token = data.data.auth.token;
                         swal(
@@ -261,13 +279,17 @@ angular
 
             $scope.addNewOrder = function() {
                 if ($scope.newOrder.name && $scope.newOrder.products.length > 0) {
+                    $scope.newOrder.normalPrice = $scope.nPrice;
+                    $scope.newOrder.discountPrice = $scope.nPrice * $scope.discount;
                     $localStorage.orders.push($scope.newOrder);
-                    for (var i = 0; i < $scope.products.length; i++) {
-                        $scope.products[i].amount = '';
-                    }
-                    for (var i = 0; i < $scope.set.length; i++) {
-                        $scope.set[i].amount = '';
-                    }
+                    // for (var i = 0; i < $scope.products.length; i++) {
+                    //     $scope.products[i].amount = '';
+                    // }
+                    // for (var i = 0; i < $scope.set.length; i++) {
+                    //     $scope.set[i].amount = '';
+                    // }
+                    $scope.getProductsFromAPI();
+                    $scope.getSetFromAPI();
 
                     $scope.newOrder = {
                         name: "",
@@ -328,6 +350,41 @@ angular
                     $('#collapse3').collapse('hide')
                     $('#collapse1').collapse('show')
                 })
+            }
+            $scope.nPrice = 0;
+            $scope.dPrice = 0;
+            $scope.normalPrice = function(amount, price) {
+                $scope.cena = amount * price + $scope.cena;
+                // alert($scope.cena);
+                return amount * price;
+            }
+
+            $scope.discountPrice = function(amount, price) {
+                for (var i = 0; i < $localStorage.users.length; i++) {
+                    if ($localStorage.users[i].email == $localStorage.user.auth.email) {
+                        $scope.discount = 1 - $localStorage.users[i].discount / 100;
+                        // alert("mati");
+                    }
+                }
+                return amount * price * $scope.discount;
+            }
+
+            $scope.normalSum = function() {
+                $scope.nPrice = 0;
+                for (var i = 0; i < $scope.newOrder.products.length; i++) {
+                    if ($scope.newOrder.products[i].type) {
+                        $scope.nPrice = $scope.newOrder.products[i].set_price * $scope.newOrder.products[i].amount + $scope.nPrice;
+                    } else {
+                        $scope.nPrice = $scope.newOrder.products[i].price * $scope.newOrder.products[i].amount + $scope.nPrice;
+
+                    }
+                }
+                return $scope.nPrice;
+            }
+
+            $scope.discountSum = function() {
+
+                return $scope.nPrice * $scope.discount;
             }
         }
     ]);

@@ -145,6 +145,18 @@ angular.module('Wss.Routes', [
 
 
 
+            $rootScope.preloaderCounter = 0;
+
+            $rootScope.showPreloader = function() {
+                $rootScope.preloaderCounter++;
+            }
+
+            $rootScope.hidePreloader = function() {
+                $rootScope.preloaderCounter--;
+            }
+
+
+
 
 
         });

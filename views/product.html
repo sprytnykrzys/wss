@@ -5,13 +5,13 @@
             <div class="col-lg-8 col-md-7 col-sm-7 input-margin">
                 <input class="form-control product-inputs" type="text" id="example-text-input" ng-model="newProduct.product.code">
             </div>
+            <label for="example-text-input" class="col-lg-4 col-md-5 col-sm-5 col-form-label input-label">Kod dodatkowy</label>
+            <div class="col-lg-8 col-md-7 col-sm-7 input-margin">
+                <input class="form-control product-inputs" type="text" id="example-text-input" ng-model="newProduct.product.export_code">
+            </div>
             <label for="example-text-input" class="col-lg-4 col-md-5 col-sm-5 col-form-label input-label">Nazwa</label>
             <div class="col-lg-8 col-md-7 col-sm-7 input-margin">
                 <input class="form-control product-inputs" type="text" id="example-text-input" ng-model="newProduct.product.name">
-            </div>
-            <label for="example-text-input" class="col-lg-4 col-md-5 col-sm-5 col-form-label input-label">Kod eksportowy</label>
-            <div class="col-lg-8 col-md-7 col-sm-7 input-margin">
-                <input class="form-control product-inputs" type="text" id="example-text-input" ng-model="newProduct.product.export_code">
             </div>
             <label for="example-text-input" class="col-lg-4 col-md-5 col-sm-5 col-form-label input-label">Cena</label>
             <div class="col-lg-8 col-md-7 col-sm-7 input-margin">
@@ -34,9 +34,9 @@
             <div class="col-lg-7 col-md-6 col-sm-6 input-margin">
                 <select class="form-control product-inputs" ng-model="newProduct.product.id_system">
                     <optgroup ng-repeat="(key, value) in catalog[1].subhierarchyElements" label="{{value.name}}">
-                        <option ng-repeat="(system, name) in catalog[1].subhierarchyElements[key].subhierarchyElements" ng-value="{{name.id}}">{{name.name}}</option>
+                        <option ng-repeat="(system, name) in catalog[1].subhierarchyElements[key].subhierarchyElements" ng-selected="newProduct.product.id_system == name.id" ng-value="{{name.id}}">{{name.name}}</option>
                     </optgroup>
-                </select>  
+                </select>
             </div>
             <label class="col-lg-4 col-md-5 col-sm-5 col-form-label input-label">Obrazek</label>
             <div class="col-lg-8 col-md-7 col-sm-7 input-margin">
@@ -54,6 +54,7 @@
                     <tr>
                         <th class="center">Kod</th>
                         <th class="center">Nazwa</th>
+                        <th class="center">System</th>
                         <th class="center">Cena</th>
                         <th class="center">Data</th>
                         <th class="center">Akcja</th>
@@ -68,6 +69,7 @@
                             </a>
                             {{prod.name}}
                         </td>
+                        <td>{{getName(prod.id_system)}}</td>
                         <td>{{prod.price}} {{prod.currency}}</td>
                         <td>{{prod.creation_date | date:"dd/MM/yyyy"}}</td>
                         <td class="delete-button">
