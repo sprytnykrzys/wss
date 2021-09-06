@@ -672,5 +672,32 @@ angular.module('Wss.Services.ContentSrvc', [
 
             return promise;
         };
+
+        this.generateExcel = function(dataOffer) {
+            $rootScope.showPreloader();
+            // var data = dataOffer;
+            
+            var data = {
+                "data": dataOffer
+            };
+
+            var req = {
+                method: 'POST',
+                url: 'https://wss-file-generator.k-org.pl/excel',
+                data: data,
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            };
+
+            var promise = $http(req);
+
+            promise.then(function(data) {
+                console.log(data, 'dane z API')
+                $rootScope.hidePreloader();
+            });
+
+            return promise;
+        };
     }
 ]);

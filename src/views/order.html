@@ -8,6 +8,8 @@
     <div class="row center" ng-if="currentOrders.length > 0" style="margin-bottom: 20px;">
         <button type="submit" id="print-button" class="btn btn-primary" ng-click="printOrder()"><i class="fa fa-print fa-lg" aria-hidden="true"></i> Drukuj
         </button>
+        <button type="submit" id="print-button" class="btn btn-primary" ng-click="generateExcel()">Generuj excel
+        </button>
         <label>Dane użytkownika:</label>
         <p>Email: {{userData.auth.email}}</p>
     </div>

@@ -35,6 +35,7 @@ angular
             $scope.printOrder = function() {
                 window.print();
             }
+
             $scope.normalPrice = function(amount, price) {
 
                 return amount * price;
@@ -84,6 +85,58 @@ angular
                         }
                     }
                 }
+            }
+
+            $scope.generateExcel = function() {
+                console.log('test')
+                
+                ContentSrvc.generateExcel($scope.generateJSON()).then(function(data) {
+                    console.log(data)
+
+                }, function(data) {
+                    swal({
+                        title: 'Wystąpił błąd!',
+                        timer: 1200
+                    })
+                });
+            }
+
+            $scope.generateJSON = function() {
+                var loggedUser;
+                var objectToExcel = {}
+                for (var i = 0; i < $localStorage.users.length; i++) {
+                    if($localStorage.users[i].uid == $localStorage.user.auth.uid) {
+                        loggedUser = $localStorage.users[i]
+                    }
+                }
+                objectToExcel.user = {
+                    "discount": loggedUser.discount,
+                    "email": loggedUser.email   
+                }
+                objectToExcel.date_of_issue = new Date()
+                objectToExcel.orders = []
+
+                for (var i = 0; i < $localStorage.orders.length; i++) {
+                    objectToExcel.orders[i] = {
+                        name: $localStorage.orders[i].name,
+                        set: [],
+                        single_products: []
+                    }
+                    for (var j = 0; j < $localStorage.orders[i].products.length; j++) {
+                        if($localStorage.orders[i].products[j].hasOwnProperty('set_price')) {
+                            for (var l = 0; l < $localStorage.set.length; l++) {
+                                if($localStorage.set[l].code == $localStorage.orders[i].products[j].code) {
+                                    objectToExcel.orders[i].set.push($localStorage.set[l]) 
+                                }
+                            }
+                        } else if($localStorage.orders[i].products[j].hasOwnProperty('price')) {
+                            objectToExcel.orders[i].single_products.push($localStorage.orders[i].products[j])
+                        }
+                    }
+                }
+
+                console.log(objectToExcel, 'OBIEKT DO WYSYŁKI')
+                return objectToExcel;
             }
         }
     ]);
