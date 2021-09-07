@@ -687,13 +687,14 @@ angular.module('Wss.Services.ContentSrvc', [
                 data: data,
                 headers: {
                     "Content-Type": "application/json"
-                }
+                },
+                responseType: 'blob'
             };
 
             var promise = $http(req);
 
             promise.then(function(data) {
-                console.log(data, 'dane z API')
+                // console.log(data, 'dane z API')
                 $rootScope.hidePreloader();
             });
 

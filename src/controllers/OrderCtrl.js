@@ -88,10 +88,17 @@ angular
             }
 
             $scope.generateExcel = function() {
-                console.log('test')
-                
                 ContentSrvc.generateExcel($scope.generateJSON()).then(function(data) {
-                    console.log(data)
+                    var blob = new Blob([data.data], { type: "application/octetstream;charset=utf-8" });
+                    var url = window.URL || window.webkitURL;
+                    var link = url.createObjectURL(blob);
+                    var a = document.createElement('a');
+                    a.href = link;
+                    a.target = '_blank';
+                    a.download = 'out.xlsx';
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
 
                 }, function(data) {
                     swal({
@@ -135,7 +142,6 @@ angular
                     }
                 }
 
-                console.log(objectToExcel, 'OBIEKT DO WYSYŁKI')
                 return objectToExcel;
             }
         }

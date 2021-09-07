@@ -93,7 +93,8 @@ angular
 
         //TODO - should be moved to config file
 
-        $rootScope.endpointURL = "http://wss-app.k-org.pl";
+        // $rootScope.endpointURL = "http://wss-app.k-org.pl";
+        $rootScope.endpointURL = "http://oferty.wss.de/backend";
 
         // if (to.name == 'admin') {
         //     e.preventDefault();
