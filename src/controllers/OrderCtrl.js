@@ -95,7 +95,7 @@ angular
                     var a = document.createElement('a');
                     a.href = link;
                     a.target = '_blank';
-                    a.download = 'out.xlsx';
+                    a.download = 'oferta.xlsx';
                     document.body.appendChild(a);
                     a.click();
                     a.remove();
