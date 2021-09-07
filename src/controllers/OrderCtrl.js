@@ -116,9 +116,16 @@ angular
                         loggedUser = $localStorage.users[i]
                     }
                 }
-                objectToExcel.user = {
-                    "discount": loggedUser.discount,
-                    "email": loggedUser.email   
+                if(loggedUser) {
+                    objectToExcel.user = {
+                        "discount": loggedUser.discount,
+                        "email": loggedUser.email   
+                    }
+                } else {
+                    objectToExcel.user = {
+                        "discount": 0,
+                        "email": $localStorage.user.auth.email   
+                    }
                 }
                 objectToExcel.date_of_issue = new Date()
                 objectToExcel.orders = []
